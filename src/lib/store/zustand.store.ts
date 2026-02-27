@@ -15,13 +15,13 @@ export const useMealJetStore = create<MealJetStore>()(
     {
       name: 'mj-storage',
       storage: createJSONStorage(() => localStorage, {
-        replacer: (key, value) => {
+        replacer: (_, value) => {
           if (value instanceof Map) {
             return { __type: 'Map', entries: [...value.entries()] };
           }
           return value;
         },
-        reviver: (key, value) => {
+        reviver: (_, value) => {
           const newValue = value as { __type: string; entries: [string, unknown][] };
           if (newValue?.__type === 'Map') {
             return new Map(newValue.entries);
