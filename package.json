@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc -b --pretty false",
+    "check": "npm run lint && npm run typecheck && npm run vitest",
     "preview": "vite preview",
-    "vitest": "vitest run",
+    "vitest": "vitest run --passWithNoTests",
     "vitest:watch": "vitest",
     "prepare": "husky"
   },
