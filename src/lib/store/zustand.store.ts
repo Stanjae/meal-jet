@@ -2,8 +2,9 @@ import { create, type ExtractState } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { createAuthSlice, type MealJetAuth } from './auth.slice';
 import { createCartSlice, type MealJetCart } from './cart.slice';
+import { createVendorSlice, type MealJetVendor } from './vendor.slice';
 
-type MealJetStore = MealJetAuth & MealJetCart;
+type MealJetStore = MealJetAuth & MealJetCart & MealJetVendor;
 
 // Create store using the curried form of `create`
 export const useMealJetStore = create<MealJetStore>()(
@@ -11,6 +12,7 @@ export const useMealJetStore = create<MealJetStore>()(
     (...a) => ({
       ...createAuthSlice(...a),
       ...createCartSlice(...a),
+      ...createVendorSlice(...a),
     }),
     {
       name: 'mj-storage',

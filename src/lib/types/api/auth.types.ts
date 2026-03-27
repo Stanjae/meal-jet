@@ -1,22 +1,24 @@
 import type { IUser } from '../store.types';
 
+export type TGetApiResponseWithPagination<T> = {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: T;
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+};
+
 export type TGetApiResponse<T> = {
   statusCode: number;
   success: boolean;
   message: string;
-  result: {
-    data: T;
-    meta: {
-      page: number;
-      limit: number;
-      totalRecords: number;
-      previousPage: boolean;
-      nextPage: boolean;
-      pageCount: number;
-    };
-  };
+  data: T;
   path: string;
-  duration: number;
 };
 
 export type TPostApiResponse<T> = {
@@ -37,3 +39,8 @@ export type TPostUserLoginResponse = TPostApiResponse<{
 }>;
 
 export type TPostUserLogoutResponse = TPostApiResponse<{ message: string }>;
+
+export type TIsAuthenticatedApiResponse = TPostApiResponse<{
+  user: IUser;
+  isAuthenticated: boolean;
+}>;

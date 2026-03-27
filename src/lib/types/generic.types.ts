@@ -14,6 +14,7 @@ export type MJDashboardNavOption = {
   label: string;
   path: string;
   icon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
+  children?: MJDashboardNavOption[];
 };
 
 export type MJCarouselDataItem = {
@@ -28,4 +29,60 @@ export type MJCarouselDataItem = {
   duration?: string;
   quantity?: number;
   totalQuantity?: number;
+};
+
+export type FormFieldType =
+  | 'text'
+  | 'textarea'
+  | 'multiselect'
+  | 'phone'
+  | 'file'
+  | 'addressSearch'
+  | 'group'
+  | 'image'
+  | 'number'
+  | 'currency';
+
+export type MJTransformedFormField = {
+  title: string;
+  name: string;
+  type: FormFieldType;
+  children?: Record<string, unknown>;
+  preInputDirection?: 'prefix' | 'suffix';
+  prefixIcon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
+  suffixIcon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
+};
+
+export type MJSelectOption = {
+  label: string;
+  value: string;
+};
+
+export type MJRecord = Record<
+  string,
+  string | number | boolean | Date | Record<string, unknown> | unknown[]
+>;
+
+export type MJTableColumn = {
+  label: string;
+  accessorKey: string;
+  render?: (cellValue: MJRecord) => React.ReactNode;
+  isImageAccessor?: boolean;
+};
+
+export type TMenuItemsFields = {
+  name: string;
+  label: string;
+  description?: string;
+  type: string;
+  placeholder?: string;
+  required: boolean;
+  error?: string;
+  data?: MJSelectOption[];
+};
+
+export type TMenuItemFieldGroup = {
+  title: string;
+  fields: TMenuItemsFields[];
+  description?: string;
 };

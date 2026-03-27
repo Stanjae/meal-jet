@@ -1,5 +1,6 @@
 import type { IUser } from '@/lib/types';
 import {
+  type TIsAuthenticatedApiResponse,
   type TPostCustomerSignupResponse,
   type TPostUserLoginResponse,
   type TPostUserLogoutResponse,
@@ -63,6 +64,16 @@ const authClient = {
     return await Client.get<{ message: string; statusCode: number }>(
       `${ENDPOINTS.verifyNow}?email=${email}`
     );
+  },
+
+  /**
+   * Description - check if the user is authenticated.
+   * @returns Data fetched from `/auth/is-authenticated`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+
+  isAuthenticated: async () => {
+    return await Client.get<TIsAuthenticatedApiResponse>(ENDPOINTS.isAuthenticated);
   },
 };
 

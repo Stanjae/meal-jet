@@ -16,15 +16,22 @@ import { Route as AuthVerifyNowRouteImport } from './routes/auth/verify-now'
 import { Route as AuthVendorSignupRouteImport } from './routes/auth/vendor-signup'
 import { Route as AuthAccountVerificationRouteImport } from './routes/auth/account-verification'
 import { Route as AdminDashboardHomeRouteImport } from './routes/admin-dashboard/home'
+import { Route as DashboardPathlessLayoutRouteRouteImport } from './routes/dashboard/_pathlessLayout/route'
 import { Route as AuthPathlessLayoutRouteRouteImport } from './routes/auth/_pathlessLayout/route'
+import { Route as DashboardPathlessLayoutIndexRouteImport } from './routes/dashboard/_pathlessLayout/index'
 import { Route as AuthPathlessLayoutSignupRouteImport } from './routes/auth/_pathlessLayout/signup'
 import { Route as AuthPathlessLayoutLoginRouteImport } from './routes/auth/_pathlessLayout/login'
-import { Route as DashboardUserIdPathlessLayoutRouteRouteImport } from './routes/dashboard/$userId/_pathlessLayout/route'
-import { Route as DashboardUserIdPathlessLayoutIndexRouteImport } from './routes/dashboard/$userId/_pathlessLayout/index'
-import { Route as DashboardUserIdPathlessLayoutvendorOrdersRouteImport } from './routes/dashboard/$userId/_pathlessLayout/(vendor)/orders'
-import { Route as DashboardUserIdPathlessLayoutdriversMyDeliveriesRouteImport } from './routes/dashboard/$userId/_pathlessLayout/(drivers)/my-deliveries'
-import { Route as DashboardUserIdPathlessLayoutcustomerMyOrdersRouteImport } from './routes/dashboard/$userId/_pathlessLayout/(customer)/my-orders'
-import { Route as DashboardUserIdPathlessLayoutcustomerExploreRouteImport } from './routes/dashboard/$userId/_pathlessLayout/(customer)/explore'
+import { Route as DashboardPathlessLayoutselectStoreSelectStoreRouteImport } from './routes/dashboard/_pathlessLayout/(select-store)/select-store'
+import { Route as DashboardPathlessLayoutonboardingOnboardingRouteImport } from './routes/dashboard/_pathlessLayout/(onboarding)/onboarding'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/route'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutIndexRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/index'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/orders'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(drivers)/my-deliveries'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/index'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit.$itemId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -61,10 +68,22 @@ const AdminDashboardHomeRoute = AdminDashboardHomeRouteImport.update({
   path: '/admin-dashboard/home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardPathlessLayoutRouteRoute =
+  DashboardPathlessLayoutRouteRouteImport.update({
+    id: '/dashboard/_pathlessLayout',
+    path: '/dashboard',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthPathlessLayoutRouteRoute = AuthPathlessLayoutRouteRouteImport.update({
   id: '/_pathlessLayout',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const DashboardPathlessLayoutIndexRoute =
+  DashboardPathlessLayoutIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardPathlessLayoutRouteRoute,
+  } as any)
 const AuthPathlessLayoutSignupRoute =
   AuthPathlessLayoutSignupRouteImport.update({
     id: '/signup',
@@ -76,59 +95,111 @@ const AuthPathlessLayoutLoginRoute = AuthPathlessLayoutLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthPathlessLayoutRouteRoute,
 } as any)
-const DashboardUserIdPathlessLayoutRouteRoute =
-  DashboardUserIdPathlessLayoutRouteRouteImport.update({
-    id: '/dashboard/$userId/_pathlessLayout',
-    path: '/dashboard/$userId',
-    getParentRoute: () => rootRouteImport,
+const DashboardPathlessLayoutselectStoreSelectStoreRoute =
+  DashboardPathlessLayoutselectStoreSelectStoreRouteImport.update({
+    id: '/(select-store)/select-store',
+    path: '/select-store',
+    getParentRoute: () => DashboardPathlessLayoutRouteRoute,
   } as any)
-const DashboardUserIdPathlessLayoutIndexRoute =
-  DashboardUserIdPathlessLayoutIndexRouteImport.update({
+const DashboardPathlessLayoutonboardingOnboardingRoute =
+  DashboardPathlessLayoutonboardingOnboardingRouteImport.update({
+    id: '/(onboarding)/onboarding',
+    path: '/onboarding',
+    getParentRoute: () => DashboardPathlessLayoutRouteRoute,
+  } as any)
+const DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteImport.update({
+    id: '/$userId/_pathlessLayout',
+    path: '/$userId',
+    getParentRoute: () => DashboardPathlessLayoutRouteRoute,
+  } as any)
+const DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => DashboardUserIdPathlessLayoutRouteRoute,
+    getParentRoute: () => DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
   } as any)
-const DashboardUserIdPathlessLayoutvendorOrdersRoute =
-  DashboardUserIdPathlessLayoutvendorOrdersRouteImport.update({
+const DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRouteImport.update({
     id: '/(vendor)/orders',
     path: '/orders',
-    getParentRoute: () => DashboardUserIdPathlessLayoutRouteRoute,
+    getParentRoute: () => DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
   } as any)
-const DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute =
-  DashboardUserIdPathlessLayoutdriversMyDeliveriesRouteImport.update({
-    id: '/(drivers)/my-deliveries',
-    path: '/my-deliveries',
-    getParentRoute: () => DashboardUserIdPathlessLayoutRouteRoute,
-  } as any)
-const DashboardUserIdPathlessLayoutcustomerMyOrdersRoute =
-  DashboardUserIdPathlessLayoutcustomerMyOrdersRouteImport.update({
-    id: '/(customer)/my-orders',
-    path: '/my-orders',
-    getParentRoute: () => DashboardUserIdPathlessLayoutRouteRoute,
-  } as any)
-const DashboardUserIdPathlessLayoutcustomerExploreRoute =
-  DashboardUserIdPathlessLayoutcustomerExploreRouteImport.update({
+const DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRouteImport.update(
+    {
+      id: '/(drivers)/my-deliveries',
+      path: '/my-deliveries',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
+const DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRouteImport.update(
+    {
+      id: '/(customer)/my-orders',
+      path: '/my-orders',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
+const DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRouteImport.update({
     id: '/(customer)/explore',
     path: '/explore',
-    getParentRoute: () => DashboardUserIdPathlessLayoutRouteRoute,
+    getParentRoute: () => DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
   } as any)
+const DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRouteImport.update(
+    {
+      id: '/(vendor)/menu-management/',
+      path: '/menu-management/',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
+const DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRouteImport.update(
+    {
+      id: '/(vendor)/menu-management/categories',
+      path: '/menu-management/categories',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
+const DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRouteImport.update(
+    {
+      id: '/(vendor)/menu-management/edit/$itemId',
+      path: '/menu-management/edit/$itemId',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthPathlessLayoutRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardPathlessLayoutRouteRouteWithChildren
   '/admin-dashboard/home': typeof AdminDashboardHomeRoute
   '/auth/account-verification': typeof AuthAccountVerificationRoute
   '/auth/vendor-signup': typeof AuthVendorSignupRoute
   '/auth/verify-now': typeof AuthVerifyNowRoute
-  '/dashboard/$userId': typeof DashboardUserIdPathlessLayoutRouteRouteWithChildren
   '/auth/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/signup': typeof AuthPathlessLayoutSignupRoute
-  '/dashboard/$userId/': typeof DashboardUserIdPathlessLayoutIndexRoute
-  '/dashboard/$userId/explore': typeof DashboardUserIdPathlessLayoutcustomerExploreRoute
-  '/dashboard/$userId/my-orders': typeof DashboardUserIdPathlessLayoutcustomerMyOrdersRoute
-  '/dashboard/$userId/my-deliveries': typeof DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute
-  '/dashboard/$userId/orders': typeof DashboardUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard/': typeof DashboardPathlessLayoutIndexRoute
+  '/dashboard/$userId': typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren
+  '/dashboard/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
+  '/dashboard/select-store': typeof DashboardPathlessLayoutselectStoreSelectStoreRoute
+  '/dashboard/$userId/': typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute
+  '/dashboard/$userId/explore': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute
+  '/dashboard/$userId/my-orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute
+  '/dashboard/$userId/my-deliveries': typeof DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute
+  '/dashboard/$userId/orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard/$userId/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
+  '/dashboard/$userId/menu-management/': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
+  '/dashboard/$userId/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,11 +211,17 @@ export interface FileRoutesByTo {
   '/auth/verify-now': typeof AuthVerifyNowRoute
   '/auth/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/signup': typeof AuthPathlessLayoutSignupRoute
-  '/dashboard/$userId': typeof DashboardUserIdPathlessLayoutIndexRoute
-  '/dashboard/$userId/explore': typeof DashboardUserIdPathlessLayoutcustomerExploreRoute
-  '/dashboard/$userId/my-orders': typeof DashboardUserIdPathlessLayoutcustomerMyOrdersRoute
-  '/dashboard/$userId/my-deliveries': typeof DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute
-  '/dashboard/$userId/orders': typeof DashboardUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard': typeof DashboardPathlessLayoutIndexRoute
+  '/dashboard/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
+  '/dashboard/select-store': typeof DashboardPathlessLayoutselectStoreSelectStoreRoute
+  '/dashboard/$userId': typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute
+  '/dashboard/$userId/explore': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute
+  '/dashboard/$userId/my-orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute
+  '/dashboard/$userId/my-deliveries': typeof DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute
+  '/dashboard/$userId/orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard/$userId/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
+  '/dashboard/$userId/menu-management': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
+  '/dashboard/$userId/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,18 +229,25 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth/_pathlessLayout': typeof AuthPathlessLayoutRouteRouteWithChildren
+  '/dashboard/_pathlessLayout': typeof DashboardPathlessLayoutRouteRouteWithChildren
   '/admin-dashboard/home': typeof AdminDashboardHomeRoute
   '/auth/account-verification': typeof AuthAccountVerificationRoute
   '/auth/vendor-signup': typeof AuthVendorSignupRoute
   '/auth/verify-now': typeof AuthVerifyNowRoute
-  '/dashboard/$userId/_pathlessLayout': typeof DashboardUserIdPathlessLayoutRouteRouteWithChildren
   '/auth/_pathlessLayout/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/_pathlessLayout/signup': typeof AuthPathlessLayoutSignupRoute
-  '/dashboard/$userId/_pathlessLayout/': typeof DashboardUserIdPathlessLayoutIndexRoute
-  '/dashboard/$userId/_pathlessLayout/(customer)/explore': typeof DashboardUserIdPathlessLayoutcustomerExploreRoute
-  '/dashboard/$userId/_pathlessLayout/(customer)/my-orders': typeof DashboardUserIdPathlessLayoutcustomerMyOrdersRoute
-  '/dashboard/$userId/_pathlessLayout/(drivers)/my-deliveries': typeof DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute
-  '/dashboard/$userId/_pathlessLayout/(vendor)/orders': typeof DashboardUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard/_pathlessLayout/': typeof DashboardPathlessLayoutIndexRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout': typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren
+  '/dashboard/_pathlessLayout/(onboarding)/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
+  '/dashboard/_pathlessLayout/(select-store)/select-store': typeof DashboardPathlessLayoutselectStoreSelectStoreRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/': typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(drivers)/my-deliveries': typeof DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/orders': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,18 +255,25 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/about'
+    | '/dashboard'
     | '/admin-dashboard/home'
     | '/auth/account-verification'
     | '/auth/vendor-signup'
     | '/auth/verify-now'
-    | '/dashboard/$userId'
     | '/auth/login'
     | '/auth/signup'
+    | '/dashboard/'
+    | '/dashboard/$userId'
+    | '/dashboard/onboarding'
+    | '/dashboard/select-store'
     | '/dashboard/$userId/'
     | '/dashboard/$userId/explore'
     | '/dashboard/$userId/my-orders'
     | '/dashboard/$userId/my-deliveries'
     | '/dashboard/$userId/orders'
+    | '/dashboard/$userId/menu-management/categories'
+    | '/dashboard/$userId/menu-management/'
+    | '/dashboard/$userId/menu-management/edit/$itemId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,37 +285,50 @@ export interface FileRouteTypes {
     | '/auth/verify-now'
     | '/auth/login'
     | '/auth/signup'
+    | '/dashboard'
+    | '/dashboard/onboarding'
+    | '/dashboard/select-store'
     | '/dashboard/$userId'
     | '/dashboard/$userId/explore'
     | '/dashboard/$userId/my-orders'
     | '/dashboard/$userId/my-deliveries'
     | '/dashboard/$userId/orders'
+    | '/dashboard/$userId/menu-management/categories'
+    | '/dashboard/$userId/menu-management'
+    | '/dashboard/$userId/menu-management/edit/$itemId'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/about'
     | '/auth/_pathlessLayout'
+    | '/dashboard/_pathlessLayout'
     | '/admin-dashboard/home'
     | '/auth/account-verification'
     | '/auth/vendor-signup'
     | '/auth/verify-now'
-    | '/dashboard/$userId/_pathlessLayout'
     | '/auth/_pathlessLayout/login'
     | '/auth/_pathlessLayout/signup'
-    | '/dashboard/$userId/_pathlessLayout/'
-    | '/dashboard/$userId/_pathlessLayout/(customer)/explore'
-    | '/dashboard/$userId/_pathlessLayout/(customer)/my-orders'
-    | '/dashboard/$userId/_pathlessLayout/(drivers)/my-deliveries'
-    | '/dashboard/$userId/_pathlessLayout/(vendor)/orders'
+    | '/dashboard/_pathlessLayout/'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout'
+    | '/dashboard/_pathlessLayout/(onboarding)/onboarding'
+    | '/dashboard/_pathlessLayout/(select-store)/select-store'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(drivers)/my-deliveries'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/orders'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  DashboardPathlessLayoutRouteRoute: typeof DashboardPathlessLayoutRouteRouteWithChildren
   AdminDashboardHomeRoute: typeof AdminDashboardHomeRoute
-  DashboardUserIdPathlessLayoutRouteRoute: typeof DashboardUserIdPathlessLayoutRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -278,12 +382,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/_pathlessLayout': {
+      id: '/dashboard/_pathlessLayout'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardPathlessLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/_pathlessLayout': {
       id: '/auth/_pathlessLayout'
       path: ''
       fullPath: '/auth'
       preLoaderRoute: typeof AuthPathlessLayoutRouteRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/dashboard/_pathlessLayout/': {
+      id: '/dashboard/_pathlessLayout/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardPathlessLayoutIndexRouteImport
+      parentRoute: typeof DashboardPathlessLayoutRouteRoute
     }
     '/auth/_pathlessLayout/signup': {
       id: '/auth/_pathlessLayout/signup'
@@ -299,47 +417,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPathlessLayoutLoginRouteImport
       parentRoute: typeof AuthPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout': {
-      id: '/dashboard/$userId/_pathlessLayout'
-      path: '/dashboard/$userId'
-      fullPath: '/dashboard/$userId'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutRouteRouteImport
-      parentRoute: typeof rootRouteImport
+    '/dashboard/_pathlessLayout/(select-store)/select-store': {
+      id: '/dashboard/_pathlessLayout/(select-store)/select-store'
+      path: '/select-store'
+      fullPath: '/dashboard/select-store'
+      preLoaderRoute: typeof DashboardPathlessLayoutselectStoreSelectStoreRouteImport
+      parentRoute: typeof DashboardPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout/': {
-      id: '/dashboard/$userId/_pathlessLayout/'
+    '/dashboard/_pathlessLayout/(onboarding)/onboarding': {
+      id: '/dashboard/_pathlessLayout/(onboarding)/onboarding'
+      path: '/onboarding'
+      fullPath: '/dashboard/onboarding'
+      preLoaderRoute: typeof DashboardPathlessLayoutonboardingOnboardingRouteImport
+      parentRoute: typeof DashboardPathlessLayoutRouteRoute
+    }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout'
+      path: '/$userId'
+      fullPath: '/dashboard/$userId'
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteImport
+      parentRoute: typeof DashboardPathlessLayoutRouteRoute
+    }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/'
       path: '/'
       fullPath: '/dashboard/$userId/'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutIndexRouteImport
-      parentRoute: typeof DashboardUserIdPathlessLayoutRouteRoute
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout/(vendor)/orders': {
-      id: '/dashboard/$userId/_pathlessLayout/(vendor)/orders'
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/orders': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/orders'
       path: '/orders'
       fullPath: '/dashboard/$userId/orders'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutvendorOrdersRouteImport
-      parentRoute: typeof DashboardUserIdPathlessLayoutRouteRoute
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout/(drivers)/my-deliveries': {
-      id: '/dashboard/$userId/_pathlessLayout/(drivers)/my-deliveries'
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(drivers)/my-deliveries': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(drivers)/my-deliveries'
       path: '/my-deliveries'
       fullPath: '/dashboard/$userId/my-deliveries'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutdriversMyDeliveriesRouteImport
-      parentRoute: typeof DashboardUserIdPathlessLayoutRouteRoute
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout/(customer)/my-orders': {
-      id: '/dashboard/$userId/_pathlessLayout/(customer)/my-orders'
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders'
       path: '/my-orders'
       fullPath: '/dashboard/$userId/my-orders'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutcustomerMyOrdersRouteImport
-      parentRoute: typeof DashboardUserIdPathlessLayoutRouteRoute
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
-    '/dashboard/$userId/_pathlessLayout/(customer)/explore': {
-      id: '/dashboard/$userId/_pathlessLayout/(customer)/explore'
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore'
       path: '/explore'
       fullPath: '/dashboard/$userId/explore'
-      preLoaderRoute: typeof DashboardUserIdPathlessLayoutcustomerExploreRouteImport
-      parentRoute: typeof DashboardUserIdPathlessLayoutRouteRoute
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
+    }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/'
+      path: '/menu-management'
+      fullPath: '/dashboard/$userId/menu-management/'
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
+    }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories'
+      path: '/menu-management/categories'
+      fullPath: '/dashboard/$userId/menu-management/categories'
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
+    }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId'
+      path: '/menu-management/edit/$itemId'
+      fullPath: '/dashboard/$userId/menu-management/edit/$itemId'
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
   }
 }
@@ -378,40 +531,72 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface DashboardUserIdPathlessLayoutRouteRouteChildren {
-  DashboardUserIdPathlessLayoutIndexRoute: typeof DashboardUserIdPathlessLayoutIndexRoute
-  DashboardUserIdPathlessLayoutcustomerExploreRoute: typeof DashboardUserIdPathlessLayoutcustomerExploreRoute
-  DashboardUserIdPathlessLayoutcustomerMyOrdersRoute: typeof DashboardUserIdPathlessLayoutcustomerMyOrdersRoute
-  DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute: typeof DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute
-  DashboardUserIdPathlessLayoutvendorOrdersRoute: typeof DashboardUserIdPathlessLayoutvendorOrdersRoute
+interface DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren {
+  DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
 }
 
-const DashboardUserIdPathlessLayoutRouteRouteChildren: DashboardUserIdPathlessLayoutRouteRouteChildren =
+const DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren: DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren =
   {
-    DashboardUserIdPathlessLayoutIndexRoute:
-      DashboardUserIdPathlessLayoutIndexRoute,
-    DashboardUserIdPathlessLayoutcustomerExploreRoute:
-      DashboardUserIdPathlessLayoutcustomerExploreRoute,
-    DashboardUserIdPathlessLayoutcustomerMyOrdersRoute:
-      DashboardUserIdPathlessLayoutcustomerMyOrdersRoute,
-    DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute:
-      DashboardUserIdPathlessLayoutdriversMyDeliveriesRoute,
-    DashboardUserIdPathlessLayoutvendorOrdersRoute:
-      DashboardUserIdPathlessLayoutvendorOrdersRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutdriversMyDeliveriesRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutvendorOrdersRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute,
   }
 
-const DashboardUserIdPathlessLayoutRouteRouteWithChildren =
-  DashboardUserIdPathlessLayoutRouteRoute._addFileChildren(
-    DashboardUserIdPathlessLayoutRouteRouteChildren,
+const DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren =
+  DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute._addFileChildren(
+    DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren,
+  )
+
+interface DashboardPathlessLayoutRouteRouteChildren {
+  DashboardPathlessLayoutIndexRoute: typeof DashboardPathlessLayoutIndexRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren
+  DashboardPathlessLayoutonboardingOnboardingRoute: typeof DashboardPathlessLayoutonboardingOnboardingRoute
+  DashboardPathlessLayoutselectStoreSelectStoreRoute: typeof DashboardPathlessLayoutselectStoreSelectStoreRoute
+}
+
+const DashboardPathlessLayoutRouteRouteChildren: DashboardPathlessLayoutRouteRouteChildren =
+  {
+    DashboardPathlessLayoutIndexRoute: DashboardPathlessLayoutIndexRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren,
+    DashboardPathlessLayoutonboardingOnboardingRoute:
+      DashboardPathlessLayoutonboardingOnboardingRoute,
+    DashboardPathlessLayoutselectStoreSelectStoreRoute:
+      DashboardPathlessLayoutselectStoreSelectStoreRoute,
+  }
+
+const DashboardPathlessLayoutRouteRouteWithChildren =
+  DashboardPathlessLayoutRouteRoute._addFileChildren(
+    DashboardPathlessLayoutRouteRouteChildren,
   )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  DashboardPathlessLayoutRouteRoute:
+    DashboardPathlessLayoutRouteRouteWithChildren,
   AdminDashboardHomeRoute: AdminDashboardHomeRoute,
-  DashboardUserIdPathlessLayoutRouteRoute:
-    DashboardUserIdPathlessLayoutRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
