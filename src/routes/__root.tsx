@@ -4,6 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import '../styles/css/global.css';
 
 import { Notifications } from '@mantine/notifications';
+import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
 import { theme } from '@/styles/theme';
 
 const RootLayout = () => (
@@ -13,4 +14,7 @@ const RootLayout = () => (
   </MantineProvider>
 );
 
-export const Route = createRootRoute({ component: RootLayout });
+export const Route = createRootRoute({
+  component: RootLayout,
+  notFoundComponent: () => <NotFoundComponent errorType="404" />,
+});

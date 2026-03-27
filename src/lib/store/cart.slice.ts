@@ -3,13 +3,6 @@ import type { MJAddToCartItem } from '../types';
 
 const initialState = { cart: new Map<string, MJAddToCartItem>() };
 
-/* const toMap = (cart: unknown): Map<string, MJAddToCartItem> => {
-  if (cart instanceof Map) return cart;
-  if (Array.isArray(cart)) return new Map(cart);
-  if (cart && typeof cart === 'object') return new Map(Object.entries(cart));
-  return new Map();
-}; */
-
 export type MealJetCart = typeof initialState & {
   addToCart: (id: string, product: MJAddToCartItem) => void;
   updateQuantity: (id: string, value: number) => void;

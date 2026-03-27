@@ -11,7 +11,7 @@ const useAuth = () => {
 
   const logout = useLogout();
 
-  const { setUser } = useMealJetStore();
+  const { setUser, clearUser, clearVendorProfile } = useMealJetStore();
 
   const loginUser = useLogin();
   const navigate = useNavigate();
@@ -61,7 +61,12 @@ const useAuth = () => {
       if (user.emailVerified && user.status === 'active') {
         setUser(user);
         navigate({
-          to: user.role === 'admin' ? '/admin-dashboard/home' : '/dashboard/$userId',
+          to:
+            user.role === 'admin'
+              ? '/admin-dashboard/home'
+              : user.role === 'vendor'
+                ? `/dashboard/${user?.vendorCount > 0 ? 'select-store' : 'onboarding'}`
+                : '/dashboard/$userId',
           params: {
             userId: user.id,
           },
@@ -70,7 +75,6 @@ const useAuth = () => {
     } catch (err) {
       const newError = err as AxiosError<{ message: string; success: boolean }>;
 
-      console.dir(newError);
       const { data, status } = newError?.response || {};
 
       if (status === 403) {
@@ -98,7 +102,9 @@ const useAuth = () => {
         message: response?.data?.message,
         color: 'green',
       });
-      setUser(null);
+      /* setUser(null);; */
+      clearUser();
+      clearVendorProfile();
       navigate({ to: '/' });
     } catch (err) {
       const newError = err as AxiosError<{ message: string; success: boolean }>;

@@ -5,10 +5,29 @@ import { useMealJetStore } from '../store/zustand.store';
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
+
+let refreshPromise: Promise<void> | null = null;
+
+function getRefreshPromise() {
+  if (!refreshPromise) {
+    refreshPromise = api
+      .get('/auth/is-authenticated')
+      .then((res) => {
+        // update store with fresh user data
+        useMealJetStore.getState().setUser(res.data.data.user);
+      })
+      .catch((err) => {
+        // both tokens are dead — now we clear and let router redirect
+        useMealJetStore.getState().clearUser();
+        return Promise.reject(err);
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+  return refreshPromise;
+}
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -17,6 +36,8 @@ api.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error)
 );
 
+const SKIP_REFRESH_URLS = ['/auth/login', '/auth/register', '/auth/is-authenticated']; // Add any other auth-related endpoints that shouldn't trigger refresh logic
+
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -24,31 +45,29 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    // Don't intercept 401s from login/signup endpoints
-    if (
-      originalRequest.url?.includes('/auth/login') ||
-      originalRequest.url?.includes('/auth/signup') ||
-      originalRequest.url?.includes('/auth/register')
-    ) {
-      return Promise.reject(error);
-    }
+    const shouldSkip = SKIP_REFRESH_URLS.some((url) => originalRequest.url?.includes(url));
+    if (shouldSkip) return Promise.reject(error);
 
+    // for all other 401s mid-session, clear user and let
+    // the router's beforeLoad handle the redirect on next navigation
+    console.dir('Axios interceptor caught error:', error.response?.status);
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
-        await api.post('/auth/refresh');
+        // silently reissues accessToken via your isAuthenticated middleware
+        // user never knows their token expired
+        await getRefreshPromise();
+        // retry the original request with the new access token
         return api(originalRequest);
       } catch {
-        useMealJetStore.getState().clearUser();
-        window.location.href = '/auth/login';
+        // only gets here if refresh token is also dead
+        return Promise.reject(error);
       }
     }
 
     return Promise.reject(error);
   }
 );
-
 export default class Client {
   static async get<T>(url: string, options?: AxiosRequestConfig<unknown>) {
     const response = await api.get<T>(url, options);

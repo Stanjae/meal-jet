@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ENDPOINTS } from '../clients';
 import authClient from '../clients/auth';
 
@@ -7,7 +7,13 @@ export const useCreateCustomerSignup = () => {
 };
 
 export const useLogin = () => {
-  return useMutation({ mutationFn: authClient.login });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authClient.login,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ENDPOINTS.isAuthenticated] });
+    },
+  });
 };
 
 export const useVerifyEmail = (token: string) => {
@@ -18,5 +24,18 @@ export const useVerifyEmail = (token: string) => {
 };
 
 export const useLogout = () => {
-  return useMutation({ mutationFn: authClient.logout });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authClient.logout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ENDPOINTS.isAuthenticated] });
+    },
+  });
+};
+
+export const useIsAuthenticated = () => {
+  return useQuery({
+    queryKey: [ENDPOINTS.isAuthenticated],
+    queryFn: () => authClient.isAuthenticated(),
+  });
 };

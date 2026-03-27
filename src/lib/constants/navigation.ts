@@ -14,7 +14,14 @@ export const multiRoleRoutes: { [key: string]: MJDashboardNavOption[] } = {
   ],
   vendor: [
     { label: 'Orders', path: '/dashboard/$userId/orders' },
-    { label: 'Menu Management', path: '/dashboard/$userId/menu-management' },
+    {
+      label: 'Menu Management',
+      path: '/dashboard/$userId/menu-management',
+      children: [
+        { label: 'Menu Item/Dishes', path: 'index' },
+        { label: 'Categories', path: '/dashboard/$userId/menu-management/categories' },
+      ],
+    },
   ],
 };
 

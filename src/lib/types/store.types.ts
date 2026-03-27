@@ -29,6 +29,8 @@ export interface IUser {
   walletBalance: number;
   fcmToken?: string;
   lastLogin?: Date;
+  relatedEntityStatus: 'approved' | 'in-review' | 'pending';
+  vendorCount: number;
 }
 
 export type MJAddToCartItem = {

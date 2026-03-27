@@ -12,7 +12,7 @@ function RouteComponent() {
     <div>
       <div className=" text-center">
         <MJLogo className=" mx-auto block" />
-        <h1 className=" text-2xl font-bold mt-4">Create an Account</h1>
+        <h1 className=" text-2xl font-bold mt-4">Login into your Account</h1>
       </div>
       <AuthLoginForm type={UserType.CUSTOMER} />
       <Link to="/auth/signup">

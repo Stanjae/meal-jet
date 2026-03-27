@@ -1,0 +1,16 @@
+export const TformTypes = {
+  description: 'textarea',
+  cuisineTypes: 'multiselect',
+  tags: 'multiselect',
+  phone: 'phone',
+  logo: 'image',
+  coverImage: 'image',
+  address: 'addressSearch',
+  name: 'text',
+  proof_of_registration: 'file',
+  proof_of_identification: 'file',
+  avgPrepTime: 'number',
+  minOrderAmount: 'currency',
+  baseDeliveryFee: 'currency',
+  commissionRate: 'number',
+};
