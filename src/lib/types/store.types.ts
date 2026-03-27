@@ -4,16 +4,16 @@ export type AuthProvider = 'local' | 'google';
 
 export type UserStatus = 'active' | 'suspended' | 'pending_verification' | 'banned';
 
-export interface IAddress {
+export type IAddress = {
   label: string; // 'Home', 'Work', etc.
   street: string;
   city: string;
   state: string;
   country: string;
   coordinates: { lat: number; lng: number };
-}
+};
 
-export interface IUser {
+export type IUser = {
   id: string;
   username: string;
   email: string;
@@ -31,7 +31,7 @@ export interface IUser {
   lastLogin?: Date;
   relatedEntityStatus: 'approved' | 'in-review' | 'pending';
   vendorCount: number;
-}
+};
 
 export type MJAddToCartItem = {
   title: string;

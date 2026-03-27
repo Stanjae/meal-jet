@@ -15,25 +15,25 @@ export interface IOpeningHour {
   isClosed: boolean;
 }
 
-export interface IAddress {
+export type VendorAddress = {
   street: string;
   city: string;
   state: string;
   country: string;
   postalCode?: string;
-}
+};
 
-export interface IBankDetails {
+export type IBankDetails = {
   bankName: string;
   bankCode?: string;
   accountNumber: string;
   accountName: string;
-}
+};
 
-export interface ILocation {
+export type ILocation = {
   type: 'Point';
   coordinates: [number, number]; // [lng, lat]
-}
+};
 
 export type IVendorStatus = 'pending_approval' | 'active' | 'suspended' | 'closed';
 
@@ -47,7 +47,7 @@ export interface IVendor {
   isOpen: boolean;
   logo: string;
   coverImage: string;
-  address: IAddress;
+  address: VendorAddress;
   location: ILocation;
   phone: string;
   openingHours: IOpeningHour[];
