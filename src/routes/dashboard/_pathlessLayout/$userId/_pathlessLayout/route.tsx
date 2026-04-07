@@ -1,9 +1,11 @@
+import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
 import { createFileRoute, Link, Outlet, redirect, useRouterState } from '@tanstack/react-router';
 import { AppShell, Avatar, Burger, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import MJLogo from '@/components/atoms/logo/MJLogo';
 import MJAvatarDropdown from '@/components/molecules/dropdowns/MJDropdown';
 import VendorDropdown from '@/components/molecules/dropdowns/VendorDropdown';
+import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
 import AddtoCart from '@/components/organisms/cart/AddtoCart';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
 import { dasboardDropdownOptions, multiRoleRoutes } from '@/lib/constants';
@@ -28,9 +30,12 @@ export const Route = createFileRoute('/dashboard/_pathlessLayout/$userId/_pathle
 });
 
 function RouteComponent() {
+  const { user, vendor, setVendorProfile } = useMealJetStore((state) => state);
+
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const { user, vendor, setVendorProfile } = useMealJetStore((state) => state);
+  const [locationWidgetOpened, { open: openLocationWidget, close: closeLocationWidget }] =
+    useDisclosure(false);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -48,6 +53,16 @@ function RouteComponent() {
     return option;
   });
 
+  const handleMainColor = () => {
+    const pathSegments = pathname.split('/')[pathname.split('/').length - 1];
+    switch (pathSegments) {
+      case 'checkout':
+        return 'bg-primary/5';
+      default:
+        return '';
+    }
+  };
+
   return (
     <AppShell
       padding="md"
@@ -59,13 +74,30 @@ function RouteComponent() {
       }}
     >
       <AppShell.Header className="flex items-center justify-between pr-5">
-        <Group px="md">
+        <Group className="flex-1" px="md">
+          <MJLogo />
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-          <MJLogo />
+          {user?.role === UserType.CUSTOMER && (
+            <section
+              onClick={openLocationWidget}
+              className="flex cursor-pointer w-full max-w-80 items-center border-x px-3 border-x-gray-200 gap-2"
+            >
+              <IconMapPin color="orange" />
+              <div>
+                <h4 className="uppercase text-xs font-semibold">Delivery to</h4>
+                <p title={user?.currentAddress?.formattedAddress} className="text-sm text-gray-600">
+                  {user?.currentAddress?.formattedAddress.slice(0, 30) ||
+                    'Select a delivery location'}
+                  ...
+                </p>
+              </div>
+              <IconChevronDown className="ml-auto" />
+            </section>
+          )}
         </Group>
         <Group>
-          {user?.role === UserType.CUSTOMER ? (
+          {user?.role === UserType.CUSTOMER && !pathname.includes('checkout') ? (
             <AddtoCart />
           ) : user?.role === UserType.VENDOR ? (
             <VendorDropdown setVendorProfile={setVendorProfile} defaultValue={vendor} />
@@ -135,9 +167,10 @@ function RouteComponent() {
           })}
         </section>
       </AppShell.Navbar>
-      <AppShell.Main className=" h-dvh overflow-y-auto">
+      <AppShell.Main className={`${handleMainColor()} h-dvh overflow-y-auto`}>
         <Outlet />
       </AppShell.Main>
+      <AddUpdateLocationModal opened={locationWidgetOpened} onClose={closeLocationWidget} />
     </AppShell>
   );
 }

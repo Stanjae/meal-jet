@@ -9,6 +9,7 @@
 
 @theme {
   --color-primary: var(--mantine-color-m-orange-6);
+  --color-secondary: var(--mantine-color-m-green-6);
 }
 
 body,

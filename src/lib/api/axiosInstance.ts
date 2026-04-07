@@ -50,7 +50,6 @@ api.interceptors.response.use(
 
     // for all other 401s mid-session, clear user and let
     // the router's beforeLoad handle the redirect on next navigation
-    console.dir('Axios interceptor caught error:', error.response?.status);
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {

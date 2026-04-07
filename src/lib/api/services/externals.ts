@@ -3,32 +3,8 @@ import type {
   MJAccountVerificationResponse,
   MJBankApiResponse,
   MJBanksResult,
-  MJGoogleLocationResult,
+  MJMapboxLocationResult,
 } from '@/lib/types/api/externals.types';
-
-export const useGetGoogleLocation = (query: string) => {
-  return useQuery({
-    queryKey: ['googleLocation', query],
-    queryFn: async () => {
-      const response = await fetch(`https://photon.komoot.io/api/?q=${query}`);
-      const data = await response.json();
-      return data.features as Array<MJGoogleLocationResult>;
-    },
-    select: (data) => {
-      console.log('Raw Google location data:', data);
-      return data.map((feature: MJGoogleLocationResult) => ({
-        city:
-          feature.properties.city || feature.properties.locality || feature.properties.county || '',
-        state: feature.properties.state,
-        country: feature.properties.country,
-        postalCode: feature.properties.postcode,
-        coordinates: feature.geometry.coordinates,
-        street: feature.properties.street,
-      }));
-    },
-    enabled: query.length > 0, // Only run the query if there's a search term
-  });
-};
 
 export const useGetBankNames = () => {
   return useQuery({
@@ -67,5 +43,42 @@ export const useVerifyAccountNumber = (query: string, code: number) => {
       return data as MJAccountVerificationResponse;
     },
     enabled: query.length > 9,
+  });
+};
+
+export const useGetMapleBoxGeoLocation = (query: string) => {
+  const formattedQuery = encodeURIComponent(query);
+  return useQuery({
+    queryKey: ['mapleBoxGeoLocation', query],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://geocode.googleapis.com/v4/geocode/address/${formattedQuery}?key=${import.meta.env.VITE_GOOGLE_MAP_ACCESS_TOKEN}`
+      );
+      const data = await response.json();
+      return data.results as Array<MJMapboxLocationResult>;
+    },
+    select: (data) => {
+      return data.map((result) => {
+        return {
+          formattedAddress: result.formattedAddress,
+          coordinates: { lng: result.location.longitude, lat: result.location.latitude },
+          street: result.postalAddress.addressLines.join(', '),
+          country:
+            result.addressComponents.find((comp) => comp.types.includes('country'))?.longText || '',
+          postalCode:
+            result.addressComponents.find((comp) => comp.types.includes('postal_code'))?.longText ||
+            '',
+          city:
+            result.addressComponents.find((comp) =>
+              comp.types.includes('administrative_area_level_2')
+            )?.longText || '',
+          state:
+            result.addressComponents.find((comp) =>
+              comp.types.includes('administrative_area_level_1')
+            )?.longText || '',
+        };
+      });
+    },
+    enabled: query.length > 4, // Only run the query if there's a search term
   });
 };

@@ -6,11 +6,16 @@ export const ENDPOINTS = {
   logout: '/auth/logout',
   verifyNow: '/auth/verify-now',
   isAuthenticated: '/auth/is-authenticated',
+  updateUserProfile: '/auth/update-user-profile',
+  deleteUserAddress: '/auth/delete-user-address',
+  updateUserCurrentAddress: '/auth/update-user-current-address',
 
   //vendor
   createVendor: '/vendor/create-vendor',
   vendorProfileCount: '/vendor/profile-count',
   getVendorProfiles: '/vendor/get-vendor-profiles',
+  getAllVendors: '/vendor/get-all-vendors',
+  getVendorProfile: '/vendor/get-vendor-profile',
 
   //menu-category
   createMenuCategory: '/menu-category/create',
@@ -28,4 +33,10 @@ export const ENDPOINTS = {
   deleteMenuItems: '/menu/delete-menu-items',
   updateMenuItemStockStatus: '/menu/update-stock-status',
   uploadBulkMenuItems: '/menu/upload-bulk-menu-items',
+
+  //orders
+  checkout: '/orders/check-out',
+
+  //payments
+  initializePayment: '/payments/initialize',
 };

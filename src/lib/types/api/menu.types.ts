@@ -30,6 +30,7 @@ export type IAddonOption = {
   label: string;
   extraPrice: number;
   isAvailable: boolean;
+  quantity?: number;
 };
 
 export type IAddon = {
@@ -41,6 +42,7 @@ export type IAddon = {
 };
 
 export type IMenuItem = {
+  id: string;
   vendor: string;
   category: { _id: string; name: string };
   categoryId: string;

@@ -1,4 +1,5 @@
 import {
+  IconBurger,
   IconDashboard,
   IconListCheck,
   IconLogout,
@@ -9,7 +10,8 @@ import type { MJDashboardNavOption, MJDropdownOption } from '../types';
 
 export const multiRoleRoutes: { [key: string]: MJDashboardNavOption[] } = {
   customer: [
-    { label: 'Explore', path: '/dashboard/$userId/explore', icon: IconDashboard },
+    { label: 'Overview', path: '/dashboard/$userId/overview', icon: IconDashboard },
+    { label: 'Explore', path: '/dashboard/$userId/explore', icon: IconBurger },
     { label: 'My Orders', path: '/dashboard/$userId/my-orders', icon: IconListCheck },
   ],
   vendor: [

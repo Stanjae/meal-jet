@@ -71,3 +71,7 @@ export interface IVendor {
 export type TGetVendorProfilesResponse = TGetApiResponse<{
   vendors: IVendor[];
 }>;
+
+export type TGetVendorProfileResponse = TGetApiResponse<{
+  vendor: IVendor;
+}>;
