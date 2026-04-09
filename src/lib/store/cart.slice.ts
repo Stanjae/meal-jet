@@ -4,6 +4,7 @@ import type { ICheckoutSummaryResponse, MJAddToCartItem } from '../types';
 const initialState = {
   cart: new Map<string, MJAddToCartItem>(),
   noteForVendor: '',
+  noteForRider: '',
   checkoutOrderSummary: {} as ICheckoutSummaryResponse,
 };
 
@@ -13,6 +14,7 @@ export type MealJetCart = typeof initialState & {
   clearCart: () => void;
   removeItem: (id: string) => void;
   setNoteForVendor: (note: string) => void;
+  setNoteForRider: (note: string) => void;
   setCheckoutOrderSummary: (checkoutOrderSummary: ICheckoutSummaryResponse) => void;
   clearCheckoutOrderSummary: () => void;
 };
@@ -57,6 +59,10 @@ export const createCartSlice: StateCreator<MealJetCart, [], [], MealJetCart> = (
   setNoteForVendor: (note) =>
     set(() => {
       return { noteForVendor: note };
+    }),
+  setNoteForRider: (note) =>
+    set(() => {
+      return { noteForRider: note };
     }),
   setCheckoutOrderSummary: (summary) =>
     set(() => {

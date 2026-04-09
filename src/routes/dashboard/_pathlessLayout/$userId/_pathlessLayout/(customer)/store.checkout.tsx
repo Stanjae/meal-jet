@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import PaystackPop from '@paystack/inline-js';
 import {
   IconAlertCircle,
   IconArrowNarrowLeft,
@@ -8,9 +9,12 @@ import {
 } from '@tabler/icons-react';
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router';
 import { z } from 'zod/v4';
-import { Avatar, Badge, Divider, Grid, Paper } from '@mantine/core';
+import { Avatar, Badge, Checkbox, Divider, Grid, Paper } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import MJButton from '@/components/atoms/buttons/MJButton';
+import MJTextArea from '@/components/atoms/inputs/MJTextArea';
+import MJModal from '@/components/atoms/modals/MJModal';
 import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
 import PaymentOptionsWidget from '@/components/organisms/payment-options/PaymentOptionsWidget';
@@ -24,6 +28,8 @@ import { stringSchema } from '@/lib/utils/schema/zod';
 const checkoutSearchSchema = z.object({
   checkoutId: stringSchema().default(''),
 });
+
+const popup = new PaystackPop();
 
 export const Route = createFileRoute(
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/checkout'
@@ -40,58 +46,27 @@ function RouteComponent() {
   const [locationWidgetOpened, { open: openLocationWidget, close: closeLocationWidget }] =
     useDisclosure(false);
 
-  const { user, cart, checkoutOrderSummary } = useMealJetStore((state) => state);
+  const {
+    user,
+    cart,
+    checkoutOrderSummary,
+    noteForVendor,
+    noteForRider: note,
+    clearCart,
+  } = useMealJetStore((state) => state);
+
+  const [openedNoteModal, { open: openNoteModal, close: closeNoteModal }] = useDisclosure(false);
 
   const [paymentMethod, setPaymentMethod] = useState({ type: '', option: '' });
 
+  const [noteForRider, setNoteForRider] = useState(note || '');
+
   const { mutateAsync, isPending } = useHandleInitializePayment();
 
-  /* const handleCartItemsTransform = useCallback(() => {
-    const vendorMap = new Map<
-      string,
-      {
-        vendorId: string;
-        vendorImage: string;
-        vendorName: string;
-        vendorSlug: string;
-        vendorDeliveryFee: number;
-        vendorLocation: ILocation;
-        calculatedDistanceKm: string;
-        calculatedDeliveryFee: number;
-        items: MJAddToCartItem[];
-      }
-    >();
-
-    for (const product of cart.values()) {
-      const existing = vendorMap.get(product.vendorId);
-      if (existing) {
-        existing.items.push(product);
-      } else {
-        const { vendorId, vendorImage, vendorName, vendorSlug, vendorDeliveryFee, vendorLocation } =
-          product;
-        const { distanceKm, fee } = getDistanceInKmAndFees(
-          vendorLocation.coordinates[0],
-          vendorLocation.coordinates[1],
-          user?.location.coordinates[0] as number,
-          user?.location.coordinates[1] as number,
-          vendorDeliveryFee
-        );
-        vendorMap.set(vendorId, {
-          vendorId,
-          vendorImage,
-          vendorName,
-          vendorSlug,
-          vendorDeliveryFee,
-          vendorLocation,
-          calculatedDistanceKm: distanceKm,
-          calculatedDeliveryFee: fee,
-          items: [product],
-        });
-      }
-    }
-
-    return Array.from(vendorMap.values());
-  }, [cart, user]); */
+  const handleAddNoteForRider = () => {
+    setNoteForRider(noteForRider);
+    closeNoteModal();
+  };
 
   const calculatedTotalOrders = useMemo(() => {
     return [
@@ -122,12 +97,38 @@ function RouteComponent() {
       const response = await mutateAsync({
         checkoutSessionId: checkoutOrderSummary.checkoutSessionId,
         paymentMethod: selectedPaymentMethod as TPaymentMenthod,
+        noteForRider,
+        noteForVendor,
       });
-      window.open(response.data.paymentUrl);
+      popup.resumeTransaction(response.data.accessCode as string);
 
       // Start listening for socket confirmation
-      socket.on('checkout_success', () => {}); //handleCheckoutSuccess);
-      socket.on('checkout_failed', () => {}); //handleCheckoutFailed);
+      socket.on('checkout_success', () => {
+        socket.off('checkout_success');
+        socket.off('checkout_failed');
+
+        // Clear cart
+        clearCart();
+
+        // Navigate to order tracking
+        navigate({
+          to: '/dashboard/$userId/payment-confirmation/$checkoutId',
+          params: {
+            checkoutId: checkoutOrderSummary.checkoutSessionId,
+            userId: user?.id as string,
+          },
+          replace: true,
+        });
+      }); //handleCheckoutSuccess);
+      socket.on('checkout_failed', () => {
+        socket.off('checkout_success');
+        socket.off('checkout_failed');
+        notifications.show({
+          title: 'Payment Failed',
+          message: 'Your payment could not be processed. Please try again.',
+          color: 'red',
+        });
+      }); //handleCheckoutFailed);
     } catch (error) {
       console.error(error);
     }
@@ -183,7 +184,10 @@ function RouteComponent() {
                   <IconChevronRight className="ml-auto" />
                 </section>
                 <Divider my="md" />
-                <section className="flex cursor-pointer items-center gap-2.5">
+                <section
+                  onClick={openNoteModal}
+                  className="flex cursor-pointer items-center gap-2.5"
+                >
                   <IconBike size={20} />
                   <div>
                     <h4 className="font-semibold mb-1">Leave a note for your rider</h4>
@@ -307,6 +311,26 @@ function RouteComponent() {
         </Grid.Col>
       </Grid>
       <AddUpdateLocationModal opened={locationWidgetOpened} onClose={closeLocationWidget} />
+      <MJModal
+        centered
+        opened={openedNoteModal}
+        onClose={closeNoteModal}
+        title="Rider Instructions"
+      >
+        <MJTextArea
+          label="Instructions for Rider"
+          size="md"
+          mb={10}
+          value={noteForRider}
+          onChange={(e) => setNoteForRider(e.target.value)}
+        />
+
+        <Checkbox label="Save for later" />
+
+        <MJButton onClick={handleAddNoteForRider} fullWidth mt="md">
+          Add Instruction
+        </MJButton>
+      </MJModal>
     </section>
   );
 }
