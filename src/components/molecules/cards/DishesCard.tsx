@@ -9,7 +9,7 @@ type DishesCardProps = {
   isAddedToCart?: boolean;
 };
 
-const DishesCard = ({ item, handleAddToCart, isAddedToCart }: DishesCardProps) => {
+const DishesCard = ({ item, isAddedToCart }: DishesCardProps) => {
   return (
     <div className={`border border-gray-300 relative rounded-lg pb-6.5`}>
       <Badge
@@ -30,18 +30,7 @@ const DishesCard = ({ item, handleAddToCart, isAddedToCart }: DishesCardProps) =
           <span className=" text-xl font-bold text-primary">
             {formatCurrency(item.price as number, 'NGN')}
           </span>
-          <ActionIcon
-            color={isAddedToCart ? 'm-green' : 'm-orange'}
-            onClick={() =>
-              handleAddToCart(item.id, {
-                imageUrl: item.imageUrl as string,
-                title: item.title as string,
-                quantity: 1,
-                price: item.price as number,
-                totalQuantity: item.totalQuantity as number,
-              })
-            }
-          >
+          <ActionIcon color={isAddedToCart ? 'm-green' : 'm-orange'}>
             {isAddedToCart ? <IconCheck /> : <IconPlus />}
           </ActionIcon>
         </section>
