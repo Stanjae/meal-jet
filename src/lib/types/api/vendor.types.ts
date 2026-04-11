@@ -1,3 +1,4 @@
+import type { ILocation } from '../store.types';
 import type { TGetApiResponse, TPostApiResponse } from './auth.types';
 
 export type TCreateVendorResponse = TPostApiResponse<{
@@ -28,11 +29,6 @@ export type IBankDetails = {
   bankCode?: string;
   accountNumber: string;
   accountName: string;
-};
-
-export type ILocation = {
-  type: 'Point';
-  coordinates: [number, number]; // [lng, lat]
 };
 
 export type IVendorStatus = 'pending_approval' | 'active' | 'suspended' | 'closed';
@@ -70,4 +66,8 @@ export interface IVendor {
 
 export type TGetVendorProfilesResponse = TGetApiResponse<{
   vendors: IVendor[];
+}>;
+
+export type TGetVendorProfileResponse = TGetApiResponse<{
+  vendor: IVendor;
 }>;

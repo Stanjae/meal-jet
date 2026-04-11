@@ -34,8 +34,11 @@ export const initialVendorOnboardingValues: FullRestaurantData = {
     state: '',
     country: '',
     postalCode: '',
-    type: 'Point',
-    coordinates: [0, 0],
+    formattedAddress: '',
+    coordinates: {
+      lat: 0,
+      lng: 0,
+    },
   },
   logo: undefined,
   coverImage: undefined,

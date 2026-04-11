@@ -29,7 +29,11 @@ export type MJGoogleLocation = {
   state: string;
   country: string;
   postalCode: string;
-  coordinates: number[];
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  formattedAddress: string;
 };
 
 export type MJBanksResult = {
@@ -64,3 +68,50 @@ export type MJAccountVerificationResponse = MJBankResponse<{
   account_number: string;
   bank_id: number;
 }>;
+
+export type MJMapboxLocationResult = {
+  place: string;
+  placeId: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  granularity: string;
+  viewport: {
+    low: {
+      latitude: number;
+      longitude: number;
+    };
+    high: {
+      latitude: number;
+      longitude: number;
+    };
+  };
+  formattedAddress: string;
+  postalAddress: {
+    regionCode: string;
+    languageCode: string;
+    locality: string;
+    sublocality: string;
+    addressLines: string[];
+  };
+  addressComponents: {
+    longText: string;
+    shortText: string;
+    languageCode?: string;
+    types: [
+      | 'subpremise'
+      | 'political'
+      | 'street_number'
+      | 'route'
+      | 'neighborhood'
+      | 'locality'
+      | 'administrative_area_level_3'
+      | 'administrative_area_level_2'
+      | 'administrative_area_level_1'
+      | 'country'
+      | 'postal_code',
+    ];
+  }[];
+  types: ['street_address' | 'subpremise'];
+};
