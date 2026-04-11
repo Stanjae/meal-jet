@@ -13,7 +13,7 @@ import Snacks from '@/assets/hamburger2.png';
 import Image1 from '@/assets/pic-1-DpLzDiYw.jpg';
 import Image2 from '@/assets/pic-3-CmbyQfEk.jpg';
 import Image3 from '@/assets/pic-4-ECaBLxLs.jpg';
-import type { MJAddtoCart, MJCarouselDataItem } from '../types';
+import type { MJCarouselDataItem } from '../types';
 
 export const mockFeaturedEvents: MJCarouselDataItem[] = [
   {
@@ -139,34 +139,3 @@ export const mockRecentOrders: MJCarouselDataItem[] = [
     price: 8900,
   },
 ];
-
-export const mockAddToCart: MJAddtoCart = {
-  '1': {
-    title: 'Fried Rice',
-    quantity: 1,
-    totalQuantity: 12,
-    imageUrl: Order1,
-    price: 5500,
-  },
-  '2': {
-    title: 'Burger B',
-    quantity: 1,
-    totalQuantity: 12,
-    imageUrl: Order2,
-    price: 5000,
-  },
-  '3': {
-    title: 'Burger C',
-    quantity: 1,
-    totalQuantity: 12,
-    imageUrl: Order3,
-    price: 6000,
-  },
-  '4': {
-    title: 'Food Festival',
-    quantity: 1,
-    totalQuantity: 12,
-    imageUrl: Order1,
-    price: 8900,
-  },
-};

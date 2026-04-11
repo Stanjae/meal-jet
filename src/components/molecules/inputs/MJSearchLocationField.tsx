@@ -3,24 +3,18 @@ import { IconMap, IconMapPinFilled } from '@tabler/icons-react';
 import type { SetValues } from '@mantine/form';
 import { useClickOutside, useDebouncedCallback } from '@mantine/hooks';
 import MJTextinput from '@/components/atoms/inputs/MJTextinput';
-import { useGetGoogleLocation } from '@/lib/api/services';
+import { useGetMapleBoxGeoLocation } from '@/lib/api/services';
+import type { IAddress } from '@/lib/types';
 import type { MJGoogleLocation } from '@/lib/types/api/externals.types';
-
-type LocationFieldValue = {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  postalCode: string;
-  coordinates: number[];
-};
 
 type Props<T extends object> = {
   setValues: SetValues<T>;
   name: string;
-  label: string;
+  label?: string;
   defaultValue?: string;
-  error: string;
+  error?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  secondaryAction?: (location: IAddress) => void;
 };
 
 export default function MJSearchLocationField<T extends object>({
@@ -29,6 +23,8 @@ export default function MJSearchLocationField<T extends object>({
   label,
   defaultValue,
   error,
+  size = 'sm',
+  secondaryAction,
 }: Props<T>): ReactElement {
   const [value, setValue] = useState(defaultValue || '');
   const [opened, setOpened] = useState(false);
@@ -44,14 +40,14 @@ export default function MJSearchLocationField<T extends object>({
     setValue(term);
     setOpened(true);
   }, 0);
-  const { data, isLoading } = useGetGoogleLocation(value);
 
-  console.log('Google location results:', data);
+  const { data: mapleBoxData, isLoading: mapleBoxIsLoading } = useGetMapleBoxGeoLocation(value);
 
   const handleSelect = (result: MJGoogleLocation) => {
-    setValue(`${result.street} ${result.city}`);
-    const selectedLocation: LocationFieldValue = {
+    setValue(`${result.street}`);
+    const selectedLocation: IAddress = {
       street: result.street,
+      formattedAddress: result.formattedAddress,
       city: result.city,
       state: result.state,
       country: result.country,
@@ -64,12 +60,18 @@ export default function MJSearchLocationField<T extends object>({
     } as Partial<T>);
 
     setOpened(false);
+
+    if (secondaryAction) {
+      secondaryAction(selectedLocation);
+    }
   };
   return (
     <div ref={ref} className="relative">
       <MJTextinput
         leftSection={<IconMap />}
+        size={size}
         autoComplete="off"
+        onFocus={() => setOpened(true)}
         placeholder="Search location"
         value={value}
         onChange={(event) => handleSearch(event.currentTarget.value)}
@@ -77,11 +79,11 @@ export default function MJSearchLocationField<T extends object>({
         error={error}
       />
       {opened && (
-        <div className=" bg-white shadow rounded-md px-2 py-5 space-y-1 absolute w-full z-10 left-0 top-16 overflow-y-scroll max-h-60">
-          {isLoading && <p>Loading...</p>}
-          {!isLoading && data?.length === 0 && <p>No results found</p>}
-          {!isLoading &&
-            data?.map((result: MJGoogleLocation, index: number) => (
+        <div className=" bg-white shadow rounded-md px-2 py-5 space-y-1 absolute w-full z-40 left-0 top-16 overflow-y-scroll max-h-60">
+          {mapleBoxIsLoading && <p>Loading...</p>}
+          {!mapleBoxIsLoading && mapleBoxData?.length === 0 && <p>No results found</p>}
+          {!mapleBoxIsLoading &&
+            mapleBoxData?.map((result: MJGoogleLocation, index: number) => (
               <div
                 key={index}
                 className=" flex items-start p-2 gap-1 hover:bg-gray-100 rounded cursor-pointer"
@@ -89,7 +91,7 @@ export default function MJSearchLocationField<T extends object>({
               >
                 <IconMapPinFilled size={16} color="gray" />
                 <div>
-                  {result.street}
+                  {result.formattedAddress}
                   <p className="text-xs text-gray-500">
                     {result.city}, {result.state}, {result.country} {result.postalCode}
                   </p>

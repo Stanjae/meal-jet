@@ -6,12 +6,19 @@ type Props = {
   increment: () => void;
   decrement: () => void;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  disabled?: boolean;
 };
 
-export default function MJActionGroupButton({ value, increment, decrement, size = 'md' }: Props) {
+export default function MJActionGroupButton({
+  value,
+  increment,
+  decrement,
+  size = 'md',
+  disabled,
+}: Props) {
   return (
     <ActionIcon.Group>
-      <ActionIcon variant="default" size={size} radius="md" onClick={decrement}>
+      <ActionIcon disabled={disabled} variant="default" size={size} radius="md" onClick={decrement}>
         <IconChevronDown color="var(--mantine-color-red-text)" />
       </ActionIcon>
       <ActionIcon.GroupSection
@@ -22,7 +29,7 @@ export default function MJActionGroupButton({ value, increment, decrement, size 
       >
         {value}
       </ActionIcon.GroupSection>
-      <ActionIcon variant="default" size={size} radius="md" onClick={increment}>
+      <ActionIcon disabled={disabled} variant="default" size={size} radius="md" onClick={increment}>
         <IconChevronUp color="var(--mantine-color-teal-text)" />
       </ActionIcon>
     </ActionIcon.Group>

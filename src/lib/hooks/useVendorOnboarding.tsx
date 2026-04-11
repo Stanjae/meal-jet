@@ -23,6 +23,7 @@ const STEP_FIELDS: Record<number, FieldPath[]> = {
     'tags',
     'address.street',
     'address.city',
+    'address.formattedAddress',
     'address.state',
     'address.country',
     'address.postalCode',
