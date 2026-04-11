@@ -105,7 +105,7 @@ const useAuth = () => {
       /* setUser(null);; */
       clearUser();
       clearVendorProfile();
-      navigate({ to: '/' });
+      navigate({ to: '/', replace: true });
     } catch (err) {
       const newError = err as AxiosError<{ message: string; success: boolean }>;
       const { message, success } = newError?.response?.data || {};
