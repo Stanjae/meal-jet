@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { redirect } from '@tanstack/react-router';
@@ -9,10 +10,11 @@ import type { FormFieldType, MJTransformedFormField, UserType } from '@/lib/type
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isBetween);
 
 dayjs.tz.setDefault('Africa/Lagos');
 
-export const newDayJs = () => dayjs();
+export const newDayJs = (dateTime?: string) => dayjs(dateTime);
 
 export function requireAuth() {
   const user = useMealJetStore.getState().user;
@@ -238,4 +240,32 @@ export function transformToFormData(data: NestedObject): FormData {
   Object.entries(data).forEach(([key, value]) => append(key, value));
 
   return formData;
+}
+
+export function getDistanceInKmAndFees(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+  baseDeliveryFee: number
+) {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const distanceKm = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const PER_KM_RATE = 150;
+
+  const fee = baseDeliveryFee + distanceKm * PER_KM_RATE;
+
+  return {
+    distanceKm: distanceKm.toFixed(2),
+    fee,
+  };
 }

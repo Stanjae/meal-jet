@@ -1,4 +1,4 @@
-import type { IUser } from '@/lib/types';
+import type { IAddress, IUser, TPostApiResponse } from '@/lib/types';
 import {
   type TIsAuthenticatedApiResponse,
   type TPostCustomerSignupResponse,
@@ -74,6 +74,46 @@ const authClient = {
 
   isAuthenticated: async () => {
     return await Client.get<TIsAuthenticatedApiResponse>(ENDPOINTS.isAuthenticated);
+  },
+
+  /**
+   * Description - update the user's profile information.
+   * @param {Partial<IUser>} payload - The updated user profile data.
+   * @returns Data fetched from `/auth/update-user-profile`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+  updateUserProfile: async ({ type, ...payload }: Partial<IUser> & { type?: string }) => {
+    return await Client.patch<TPostApiResponse<{ message: string; user: IUser }>>(
+      ENDPOINTS.updateUserProfile,
+      payload,
+      {
+        params: { type },
+      }
+    );
+  },
+
+  /**
+   * Description - delete the user's saved addresses.
+   * @returns Data fetched from `/auth/delete-user-address`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+  deleteUserAddress: async (addressId: string) => {
+    return await Client.delete<TPostApiResponse<{ message: string; user: IUser }>>(
+      `${ENDPOINTS.deleteUserAddress}/${addressId}`
+    );
+  },
+
+  /**
+   * Description - update the user's current address and co-ordinates.
+   * @param {object} payload - The updated address data.
+   * @returns Data fetched from `/auth/update-user-current-address`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+  updateUserCurrentAddress: async (payload: IAddress) => {
+    return await Client.patch<TPostApiResponse<{ message: string; user: IUser }>>(
+      ENDPOINTS.updateUserCurrentAddress,
+      payload
+    );
   },
 };
 

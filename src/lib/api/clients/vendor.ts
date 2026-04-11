@@ -1,6 +1,7 @@
 import type {
   TCreateVendorResponse,
   TGetProfileCountResponse,
+  TGetVendorProfileResponse,
   TGetVendorProfilesResponse,
 } from '@/lib/types';
 import Client from '../axiosInstance';
@@ -37,6 +38,25 @@ const vendorClient = {
    */
   getVendorProfiles: async () => {
     return await Client.get<TGetVendorProfilesResponse>(ENDPOINTS.getVendorProfiles);
+  },
+
+  /**
+   * Description - get all vendor profiles (for customers to explore).
+   * @returns Data fetched from `/vendor/get-all-vendors`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+  getAllVendors: async () => {
+    return await Client.get<TGetVendorProfilesResponse>(ENDPOINTS.getAllVendors);
+  },
+
+  /**
+   * Description - get a single vendor profile (for customers to view vendor details).
+   * @param {string} vendorId - The ID of the vendor to fetch.
+   * @returns Data fetched from `/vendor/get-vendor-profile/${vendorId}`, or an error if the API call fails.
+   * @throws {Error} If the request fails.
+   */
+  getVendorProfile: async (vendorId: string) => {
+    return await Client.get<TGetVendorProfileResponse>(`${ENDPOINTS.getVendorProfile}/${vendorId}`);
   },
 };
 

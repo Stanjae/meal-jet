@@ -18,7 +18,6 @@ export const useCreateVendor = () => {
       navigate({ to: '/dashboard/select-store' });
     },
     onError: (error: any) => {
-      console.error('Error creating vendor:', error);
       notifications.show({
         message:
           error.response?.data?.message || 'An error occurred while creating the vendor profile.',
@@ -33,5 +32,12 @@ export const useGetVendorProfiles = () => {
   return useQuery({
     queryKey: [ENDPOINTS.getVendorProfiles],
     queryFn: vendorClient.getVendorProfiles,
+  });
+};
+
+export const useGetAllVendors = () => {
+  return useQuery({
+    queryKey: [ENDPOINTS.getAllVendors],
+    queryFn: vendorClient.getAllVendors,
   });
 };

@@ -48,6 +48,11 @@ export const basicInfoSchema = z.object({
       .max(200, 'Street address is too long')
       .trim(),
 
+    formattedAddress: stringSchema()
+      .min(5, 'Formatted address must be at least 5 characters')
+      .max(200, 'Formatted address is too long')
+      .trim(),
+
     city: stringSchema().min(2, 'City name must be at least 2 characters').max(100).trim(),
 
     state: stringSchema().min(2, 'State must be at least 2 characters').max(100).trim(),
@@ -59,13 +64,12 @@ export const basicInfoSchema = z.object({
       .regex(/^[A-Z0-9\s]{3,10}$/i, 'Enter a valid postal code')
       .optional(),
 
-    type: z.literal('Point').default('Point'),
     coordinates: z
-      .tuple([
-        z.number().min(-180).max(180, 'Longitude must be between -180 and 180'),
-        z.number().min(-90).max(90, 'Latitude must be between -90 and 90'),
-      ])
-      .refine(([lng, lat]) => !(lng === 0 && lat === 0), {
+      .object({
+        lng: z.number().min(-180).max(180, 'Longitude must be between -180 and 180'),
+        lat: z.number().min(-90).max(90, 'Latitude must be between -90 and 90'),
+      })
+      .refine(({ lng, lat }) => !(lng === 0 && lat === 0), {
         message: 'Please select a valid location on the map',
       }),
   }),

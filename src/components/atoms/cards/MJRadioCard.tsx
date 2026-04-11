@@ -11,9 +11,17 @@ type MJRadioCardProps = {
   description?: string;
   address?: string;
   status?: IVendorStatus;
+  icon?: React.ElementType | string;
 };
 
-export const MJRadioCard = ({ value, title, description, address, status }: MJRadioCardProps) => {
+export const MJRadioCard = ({
+  value,
+  title,
+  description,
+  address,
+  status,
+  icon: Icon,
+}: MJRadioCardProps) => {
   const colorMap = VENDOR_STATUS_CONFIG[status as IVendorStatus];
   return (
     <Radio.Card
@@ -26,8 +34,16 @@ export const MJRadioCard = ({ value, title, description, address, status }: MJRa
       <Group wrap="nowrap" align="flex-start">
         <Radio.Indicator />
         <div>
-          <Text className={classes.label}>{title}</Text>
-          <Text className={classes.description}>{description}</Text>
+          <div className="flex items-center gap-3">
+            <Text className={classes.label}>{title}</Text>
+            {typeof Icon === 'string' ? (
+              <img className="w-10 h-5" src={Icon} alt={title} />
+            ) : (
+              Icon && <Icon />
+            )}
+          </div>
+
+          {description && <Text className={classes.description}>{description}</Text>}
           {address && (
             <div className=" flex items-center gap-2">
               <IconMapPin size={14} />
