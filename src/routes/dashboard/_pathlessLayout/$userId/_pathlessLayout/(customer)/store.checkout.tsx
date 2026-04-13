@@ -138,11 +138,15 @@ function RouteComponent() {
     return <NotFoundComponent errorType="404" />;
   }
 
+  const goBack = () => {
+    router.history.back();
+  };
+
   return (
     <section>
       <div className="mb-5">
         <MJButton
-          onClick={() => router.navigate({ to: '..', search: {} })}
+          onClick={goBack}
           leftSection={<IconArrowNarrowLeft />}
           variant="transparent"
           pl={0}
