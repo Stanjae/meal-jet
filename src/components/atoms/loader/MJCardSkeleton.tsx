@@ -19,7 +19,7 @@ const MJCardSkeleton = ({ cols, type, totalCount = 20 }: MJCardSkeletonProps) =>
         );
       case 'menuItem':
         return (
-          <Paper withBorder pb={0} className="flex">
+          <Paper key={index} withBorder pb={0} className="flex">
             <div className="p-4 flex-1 flex flex-col">
               <Skeleton height={20} width={150} radius="md" />
               <Skeleton height={14} width={250} mt={'sm'} radius="md" />

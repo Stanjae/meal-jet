@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PaystackPop from '@paystack/inline-js';
 import {
   IconAlertCircle,
@@ -133,6 +133,18 @@ function RouteComponent() {
       console.error(error);
     }
   };
+
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    socket.on('connect', () => setIsConnected(true));
+    socket.on('disconnect', () => setIsConnected(false));
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  }, []);
 
   if (checkoutId !== checkoutOrderSummary.checkoutSessionId) {
     return <NotFoundComponent errorType="404" />;
@@ -302,7 +314,7 @@ function RouteComponent() {
             <div className="px-5 mt-3">
               <MJButton
                 onClick={handlePlaceOrder}
-                disabled={!paymentMethod.type || isPending}
+                disabled={(!paymentMethod.type || isPending) && isConnected}
                 loading={isPending}
                 fullWidth
                 radius={8}
