@@ -102,10 +102,9 @@ const useAuth = () => {
         message: response?.data?.message,
         color: 'green',
       });
-      /* setUser(null);; */
       clearUser();
       clearVendorProfile();
-      navigate({ to: '/', replace: true });
+      window.location.replace('/auth/login');
     } catch (err) {
       const newError = err as AxiosError<{ message: string; success: boolean }>;
       const { message, success } = newError?.response?.data || {};
