@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   IconCreditCardFilled,
   IconDeviceMobile,
-  IconTransfer,
   IconUser,
   IconWallet,
   IconWorld,
@@ -10,6 +9,7 @@ import {
 import { Divider, Radio, SimpleGrid } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import OpayLogo from '@/assets/opay.svg';
+import PaystackLogo from '@/assets/paystack-new.svg';
 import MJButton from '@/components/atoms/buttons/MJButton';
 import { MJRadioCard } from '@/components/atoms/cards/MJRadioCard';
 import MJModal2 from '@/components/atoms/modals/MJModal2';
@@ -61,9 +61,9 @@ const PaymentOptionsWidget = ({ setPaymentMethod, paymentMethod }: Props) => {
       icon: IconCreditCardFilled,
     },
     {
-      type: 'bank-transfer',
-      label: 'Bank Transfer',
-      icon: IconTransfer,
+      type: 'paystack',
+      label: 'Paystack',
+      icon: PaystackLogo,
     },
     {
       type: 'ussd',
