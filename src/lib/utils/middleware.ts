@@ -1,7 +1,14 @@
 import { redirect } from '@tanstack/react-router';
 import { notifications } from '@mantine/notifications';
 import authClient from '../api/clients/auth';
+import socket from '../socket.io/socketConfig';
 import { useMealJetStore } from '../store/zustand.store';
+
+function initializeWebSockets(userId: string) {
+  socket.on('connect', () => {
+    socket.emit('register', userId); // send userId to backend
+  });
+}
 
 // Used in the outer dashboard layout — only verifies auth, no role-based redirect.
 export const checkAuth = async () => {
@@ -35,6 +42,7 @@ export const handleMiddleWare = async () => {
       useMealJetStore.getState().setUser(fetchedUser);
 
       if (fetchedUser) {
+        initializeWebSockets(fetchedUser.id);
         redirectByRole(fetchedUser);
       }
     } catch {
