@@ -6,18 +6,19 @@ import { useMealJetStore } from '../store/zustand.store';
 
 function initializeWebSockets(userId: string) {
   socket.on('connect', () => {
-    socket.emit('register', userId); // send userId to backend
+    socket.emit('register', userId);
   });
 }
 
 // Used in the outer dashboard layout — only verifies auth, no role-based redirect.
 export const checkAuth = async () => {
   const user = useMealJetStore.getState().user;
-
+  initializeWebSockets(user?.id as string);
   if (!user) {
     try {
       const data = await authClient.isAuthenticated();
       useMealJetStore.getState().setUser(data?.data?.user);
+      initializeWebSockets(data?.data?.user?.id);
     } catch {
       notifications.show({
         color: 'red',
@@ -42,7 +43,6 @@ export const handleMiddleWare = async () => {
       useMealJetStore.getState().setUser(fetchedUser);
 
       if (fetchedUser) {
-        initializeWebSockets(fetchedUser.id);
         redirectByRole(fetchedUser);
       }
     } catch {
