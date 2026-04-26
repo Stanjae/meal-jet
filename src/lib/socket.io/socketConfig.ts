@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
-  transports: ['websocket', 'polling'],
+  transports: ['polling', 'websocket'], // allow both transports for better compatibility
   reconnection: true,
   reconnectionAttempts: 10,
   reconnectionDelay: 2000, // wait 2s before retrying
