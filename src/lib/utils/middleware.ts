@@ -6,7 +6,7 @@ import { useMealJetStore } from '../store/zustand.store';
 
 function initializeWebSockets(userId: string) {
   socket.on('connect', () => {
-    socket.emit('register', userId); // send userId to backend
+    socket.emit('register', userId);
   });
 }
 
