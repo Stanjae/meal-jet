@@ -36,6 +36,7 @@ export const ENDPOINTS = {
 
   //orders
   checkout: '/orders/check-out',
+  getOrderDetails: '/orders/get-order-details',
 
   //payments
   initializePayment: '/payments/initialize',
