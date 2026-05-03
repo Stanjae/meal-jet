@@ -55,11 +55,8 @@ function RouteComponent() {
 
   const handleMainColor = () => {
     const pathSegments = pathname.split('/')[pathname.split('/').length - 1];
-    switch (pathSegments) {
-      case 'checkout':
-        return 'bg-primary/5';
-      default:
-        return '';
+    if (pathSegments.includes('checkout')) {
+      return 'bg-primary/5';
     }
   };
 
