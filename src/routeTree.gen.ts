@@ -32,6 +32,7 @@ import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerMyOrdersRou
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerExploreRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/explore'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/index'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories'
+import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/track-orders.$checkoutId'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store.checkout'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store.$storeSlug'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/payment-confirmation.$checkoutId'
@@ -180,6 +181,15 @@ const DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesR
         DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
     } as any,
   )
+const DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute =
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRouteImport.update(
+    {
+      id: '/(customer)/track-orders/$checkoutId',
+      path: '/track-orders/$checkoutId',
+      getParentRoute: () =>
+        DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute,
+    } as any,
+  )
 const DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute =
   DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRouteImport.update(
     {
@@ -241,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/$userId/payment-confirmation/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRoute
   '/dashboard/$userId/store/$storeSlug': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute
   '/dashboard/$userId/store/checkout': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute
+  '/dashboard/$userId/track-orders/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute
   '/dashboard/$userId/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
   '/dashboard/$userId/menu-management/': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
   '/dashboard/$userId/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
@@ -267,6 +278,7 @@ export interface FileRoutesByTo {
   '/dashboard/$userId/payment-confirmation/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRoute
   '/dashboard/$userId/store/$storeSlug': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute
   '/dashboard/$userId/store/checkout': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute
+  '/dashboard/$userId/track-orders/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute
   '/dashboard/$userId/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
   '/dashboard/$userId/menu-management': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
   '/dashboard/$userId/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
@@ -297,6 +309,7 @@ export interface FileRoutesById {
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/payment-confirmation/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/$storeSlug': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/checkout': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute
+  '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/track-orders/$checkoutId': typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
@@ -327,6 +340,7 @@ export interface FileRouteTypes {
     | '/dashboard/$userId/payment-confirmation/$checkoutId'
     | '/dashboard/$userId/store/$storeSlug'
     | '/dashboard/$userId/store/checkout'
+    | '/dashboard/$userId/track-orders/$checkoutId'
     | '/dashboard/$userId/menu-management/categories'
     | '/dashboard/$userId/menu-management/'
     | '/dashboard/$userId/menu-management/edit/$itemId'
@@ -353,6 +367,7 @@ export interface FileRouteTypes {
     | '/dashboard/$userId/payment-confirmation/$checkoutId'
     | '/dashboard/$userId/store/$storeSlug'
     | '/dashboard/$userId/store/checkout'
+    | '/dashboard/$userId/track-orders/$checkoutId'
     | '/dashboard/$userId/menu-management/categories'
     | '/dashboard/$userId/menu-management'
     | '/dashboard/$userId/menu-management/edit/$itemId'
@@ -382,6 +397,7 @@ export interface FileRouteTypes {
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/payment-confirmation/$checkoutId'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/$storeSlug'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/checkout'
+    | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/track-orders/$checkoutId'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/categories'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit/$itemId'
@@ -558,6 +574,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRouteImport
       parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
     }
+    '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/track-orders/$checkoutId': {
+      id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/track-orders/$checkoutId'
+      path: '/track-orders/$checkoutId'
+      fullPath: '/dashboard/$userId/track-orders/$checkoutId'
+      preLoaderRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRouteImport
+      parentRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRoute
+    }
     '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/checkout': {
       id: '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/checkout'
       path: '/store/checkout'
@@ -633,6 +656,7 @@ interface DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren {
   DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRoute
   DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute
   DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute
+  DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute
   DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute
   DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute
   DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
@@ -658,6 +682,8 @@ const DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren: DashboardPa
       DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreSlugRoute,
     DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute:
       DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreCheckoutRoute,
+    DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute:
+      DashboardPathlessLayoutUserIdPathlessLayoutcustomerTrackOrdersCheckoutIdRoute,
     DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute:
       DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementCategoriesRoute,
     DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementIndexRoute:
