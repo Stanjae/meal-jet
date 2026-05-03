@@ -9,6 +9,7 @@ import { Avatar, Badge, Divider, Grid, GridCol, Paper, SimpleGrid } from '@manti
 import MJButton from '@/components/atoms/buttons/MJButton';
 import ordersClient from '@/lib/api/clients/orders';
 import { statusConfig, type TStatusConfig } from '@/lib/constants';
+import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
 import { formatCurrency, requireRole } from '@/lib/utils/helpers/helpers';
 
@@ -24,6 +25,10 @@ function RouteComponent() {
   const {
     data: { orders },
   } = Route.useLoaderData();
+
+  const user = useMealJetStore((state) => state.user);
+
+  const { checkoutId } = Route.useParams();
 
   const totalDeliveryFee = orders.reduce((total, order) => total + (order.deliveryFee || 0), 0);
 
@@ -168,7 +173,6 @@ function RouteComponent() {
             </div>
             <div>
               <section>
-                <h4 className="font-medium text-md text-gray-600 mb-2">Items</h4>
                 <div className="space-y-2">
                   {orders?.map((item, idx) => {
                     return (
@@ -214,7 +218,12 @@ function RouteComponent() {
 
           <div className="space-y-3 mt-4">
             <MJButton variant="outline" fullWidth rightSection={<IconExternalLink />}>
-              Track My Orders
+              <Link
+                to={`/dashboard/$userId/track-orders/$checkoutId`}
+                params={{ userId: user?.id as string, checkoutId: checkoutId }}
+              >
+                Track My Orders
+              </Link>
             </MJButton>
             <MJButton variant="outline" fullWidth>
               Back to Dashboard
