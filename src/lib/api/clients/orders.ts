@@ -1,4 +1,8 @@
-import type { MJAddToCartItem, THandleCheckoutResponse } from '@/lib/types';
+import type {
+  MJAddToCartItem,
+  TGetOrderDetailsResponse,
+  THandleCheckoutResponse,
+} from '@/lib/types';
 import Client from '../axiosInstance';
 import { ENDPOINTS } from './endpoints';
 
@@ -19,6 +23,16 @@ const ordersClient = {
         },
       }
     );
+  },
+
+  /**
+   * Description - fetches order details for a given checkout session after successful payment
+   * @param {string} checkoutId - ID of the checkout session to fetch details for.
+   * @returns order details for the given checkout session
+   * @throws {Error} If the request fails.
+   */
+  getOrderDetails: async (checkoutId: string) => {
+    return await Client.get<TGetOrderDetailsResponse>(`${ENDPOINTS.getOrderDetails}/${checkoutId}`);
   },
 };
 
