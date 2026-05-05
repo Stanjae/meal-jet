@@ -2,7 +2,7 @@ import { useRouter } from '@tanstack/react-router';
 import MJButton from '@/components/atoms/buttons/MJButton';
 
 type Props = {
-  errorType: '404' | '500';
+  errorType: '404' | '500' | '403' | '401' | '400';
 };
 
 const errorMessages = {
@@ -15,6 +15,21 @@ const errorMessages = {
     title: '500',
     message: 'Internal server error',
     description: 'Please try again later.',
+  },
+  '403': {
+    title: '403',
+    message: 'Forbidden',
+    description: 'You do not have permission to access this page.',
+  },
+  '401': {
+    title: '401',
+    message: 'Unauthorized',
+    description: 'You are not authorized to access this page.',
+  },
+  '400': {
+    title: '400',
+    message: 'Bad Request',
+    description: 'The request could not be understood by the server.',
   },
 };
 
