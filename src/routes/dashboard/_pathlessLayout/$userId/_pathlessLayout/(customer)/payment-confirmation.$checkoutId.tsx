@@ -23,24 +23,25 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   const {
-    data: { orders },
+    data: {
+      orders,
+      grandTotal,
+      totalServiceFee,
+      totalDeliveryFee,
+      checkoutId: validCheckoutId,
+      paymentType,
+      deliveryAddress,
+    },
   } = Route.useLoaderData();
 
   const user = useMealJetStore((state) => state.user);
 
   const { checkoutId } = Route.useParams();
 
-  const totalDeliveryFee = orders.reduce((total, order) => total + (order.deliveryFee || 0), 0);
+  if (checkoutId !== validCheckoutId) {
+    return <div>Invalid checkout ID</div>;
+  }
 
-  const totalServiceFee = orders.reduce((total, order) => total + (order.serviceFee || 0), 0);
-
-  const subTotal = orders.reduce((total, order) => total + (order.subtotal || 0), 0);
-
-  const grandTotal = subTotal + totalDeliveryFee + totalServiceFee;
-
-  const paymentType = orders[0]?.paymentMethod;
-
-  const deliveryAddress = orders[0]?.deliveryAddress?.formattedAddress;
   return (
     <section>
       <Paper p={'lg'} shadow="sm" className="flex gap-3 items-center justify-center">
@@ -62,7 +63,7 @@ function RouteComponent() {
           <div className="flex flex-col">
             {orders.map((order) => {
               const { color } = statusConfig[order?.status as TStatusConfig];
-              const grandTotal =
+              const total =
                 (order?.subtotal || 0) + (order?.deliveryFee || 0) + (order?.serviceFee || 0);
               return (
                 <Paper key={order.id} p="md" shadow="xs" className="mb-3 overflow-hidden">
@@ -141,7 +142,7 @@ function RouteComponent() {
                         <Divider my="xs" />
                         <section className="flex justify-between font-semibold">
                           <span>Total</span>
-                          <span>{formatCurrency(grandTotal, 'NGN')}</span>
+                          <span>{formatCurrency(total, 'NGN')}</span>
                         </section>
                       </section>
                     </SimpleGrid>
@@ -158,7 +159,7 @@ function RouteComponent() {
               </div>
               <div>
                 <h3 className="font-semibold text-sm">Deliverying To</h3>
-                <p className="text-base text-gray-500">{deliveryAddress}</p>
+                <p className="text-base text-gray-500">{deliveryAddress?.formattedAddress}</p>
               </div>
             </div>
           </Paper>

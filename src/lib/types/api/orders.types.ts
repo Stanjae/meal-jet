@@ -62,4 +62,12 @@ export type TOrder = {
   cancellationReason?: string;
 };
 
-export type TGetOrderDetailsResponse = TGetApiResponse<{ orders: TOrder[] }>;
+export type TGetOrderDetailsResponse = TGetApiResponse<{
+  orders: TOrder[];
+  totalDeliveryFee: number;
+  totalServiceFee: number;
+  grandTotal: number;
+  paymentType: (typeof PAYMENT_METHODS)[number];
+  deliveryAddress: IAddress;
+  checkoutId: string;
+}>;
