@@ -7,6 +7,7 @@ import {
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Avatar, Badge, Divider, Grid, GridCol, Paper, SimpleGrid } from '@mantine/core';
 import MJButton from '@/components/atoms/buttons/MJButton';
+import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
 import ordersClient from '@/lib/api/clients/orders';
 import { statusConfig, type TStatusConfig } from '@/lib/constants';
 import { useMealJetStore } from '@/lib/store/zustand.store';
@@ -39,7 +40,7 @@ function RouteComponent() {
   const { checkoutId } = Route.useParams();
 
   if (checkoutId !== validCheckoutId) {
-    return <div>Invalid checkout ID</div>;
+    return <NotFoundComponent errorType="400" />;
   }
 
   return (
