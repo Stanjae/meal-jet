@@ -17,7 +17,7 @@ import { formatCurrency, requireRole } from '@/lib/utils/helpers/helpers';
 export const Route = createFileRoute(
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/payment-confirmation/$checkoutId'
 )({
-  beforeLoad: () => requireRole(UserType.CUSTOMER),
+  beforeLoad: () => requireRole([UserType.CUSTOMER]),
   component: RouteComponent,
   loader: async ({ params: { checkoutId } }) => await ordersClient.getOrderDetails(checkoutId),
 });

@@ -174,6 +174,7 @@ export const initialRiderOnboardingValues: FullRiderData = {
   date_of_birth: newDayJs('2000-01-01').toDate(),
   email: useMealJetStore.getState().user?.email || '', // Pre-fill with logged-in user's email if available
   phone: '',
+  profile_picture: undefined,
   address: {
     street: '',
     city: '',

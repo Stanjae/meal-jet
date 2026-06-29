@@ -20,7 +20,7 @@ export const Route = createFileRoute(
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/'
 )({
   component: RouteComponent,
-  beforeLoad: () => requireRole(UserType.VENDOR),
+  beforeLoad: () => requireRole([UserType.VENDOR]),
 });
 
 function RouteComponent() {
