@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { randomId } from '@mantine/hooks';
+import { useMealJetStore } from '../store/zustand.store';
 import { ApplicationCharges, UserType } from '../types';
-import type { FullRestaurantData, SignupFormData } from '../utils/schema';
+import { newDayJs } from '../utils/helpers/helpers';
+import type { FullRestaurantData, FullRiderData, SignupFormData } from '../utils/schema';
 
 export const genericFields = {
   email: '',
@@ -164,3 +166,47 @@ export interface IMenuItem extends Document {
   tags: string[];
   orderCount: number;
 } */
+
+export const initialRiderOnboardingValues: FullRiderData = {
+  // Step 1
+  first_name: '',
+  last_name: '',
+  date_of_birth: newDayJs('2000-01-01').toDate(),
+  email: useMealJetStore.getState().user?.email || '', // Pre-fill with logged-in user's email if available
+  phone: '',
+  profile_picture: undefined,
+  address: {
+    street: '',
+    city: '',
+    state: '',
+    country: '',
+    postalCode: '',
+    formattedAddress: '',
+    coordinates: {
+      lat: 0,
+      lng: 0,
+    },
+  },
+
+  // Step 2
+  vehicle_type: '',
+  vehicle_document: undefined,
+  vehicle_plate_no: '',
+  proof_of_identification: undefined,
+  identification_type: '',
+
+  // Step 3
+  bankDetails: {
+    bankName: '',
+    accountNumber: '',
+    accountName: '',
+    bankCode: '',
+  },
+
+  // Extras
+  referral: '',
+  status: 'pending_approval',
+  agreeTerms: false,
+  agreePrivacy: false,
+  agreeMarketing: false,
+};

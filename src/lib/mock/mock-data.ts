@@ -139,3 +139,27 @@ export const mockRecentOrders: MJCarouselDataItem[] = [
     price: 8900,
   },
 ];
+
+export const TESTIMONIALS = [
+  {
+    name: 'Amara O.',
+    city: 'Lagos, NG',
+    text: 'MealJet is my go-to! Food always arrives hot and on time. Love the variety of restaurants.',
+    avatar: '🧕',
+    stars: 5,
+  },
+  {
+    name: 'David K.',
+    city: 'Abuja, NG',
+    text: 'The app is so smooth and ordering is effortless. Delivery riders are always professional.',
+    avatar: '👨🏾',
+    stars: 5,
+  },
+  {
+    name: 'Chisom E.',
+    city: 'Port Harcourt, NG',
+    text: 'I ordered for my whole office and it was seamless. MealJet never disappoints!',
+    avatar: '👩🏾',
+    stars: 5,
+  },
+];

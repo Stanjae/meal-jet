@@ -5,16 +5,19 @@ import { useForm, type UseFormInput } from '@mantine/form';
 type MealjetFormProps<T extends Record<string, unknown>> = {
   schema: z.ZodType<T>;
   defaultValues?: UseFormInput<T>['initialValues'];
+  validateInputOnChange?: boolean;
 };
 
 const useMealjetForm = <T extends Record<string, unknown>>({
   schema,
   defaultValues,
+  validateInputOnChange = false,
 }: MealjetFormProps<T>) => {
   return useForm<T>({
     mode: 'uncontrolled',
     initialValues: defaultValues,
     validate: zod4Resolver(schema),
+    validateInputOnChange,
   });
 };
 

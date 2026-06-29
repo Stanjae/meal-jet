@@ -26,15 +26,15 @@ export function requireAuth() {
   return { user };
 }
 
-export function requireRole(role: UserType) {
+export function requireRole(role: UserType[]) {
   const user = useMealJetStore.getState().user;
 
   if (!user) {
     throw redirect({ to: '/auth/login' });
   }
 
-  if (user.role !== role) {
-    throw redirect({ to: '/dashboard/' + user.id });
+  if (!role.includes(user.role)) {
+    throw redirect({ to: '/dashboard/$userId', params: { userId: user.id } });
   }
 
   return { user };
@@ -106,7 +106,7 @@ export function transformFormFields(paths: string[]): MJTransformedFormField[] {
         );
 
         acc.push({
-          title: capitalizeFirstLetter(parent),
+          title: capitalizeFirstLetter(optimizeText(parent, 'reversed')),
           name: parent,
           type: parent === 'address' ? 'addressSearch' : 'group',
           children,
@@ -114,7 +114,7 @@ export function transformFormFields(paths: string[]): MJTransformedFormField[] {
       }
     } else {
       acc.push({
-        title: capitalizeFirstLetter(path),
+        title: capitalizeFirstLetter(optimizeText(path, 'reversed')),
         type: TformTypes[path as keyof typeof TformTypes] as FormFieldType,
         name: path,
       });
@@ -154,11 +154,20 @@ type FormDataValue =
   | File
   | Blob
   | FormDataValue[]
+  | Date
   | { [key: string]: FormDataValue }
   | null
   | undefined;
 
 type NestedObject = { [key: string]: FormDataValue };
+
+const formatDateForFormData = (value: Date): string => {
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, '0');
+  const day = String(value.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
 
 const isFile = (value: unknown): value is File =>
   typeof value === 'object' &&
@@ -229,6 +238,11 @@ export function transformToFormData(data: NestedObject): FormData {
     }
 
     if (typeof value === 'object') {
+      if (value instanceof Date) {
+        formData.append(key, formatDateForFormData(value));
+        return;
+      }
+
       formData.append(key, JSON.stringify(value));
       return;
     }

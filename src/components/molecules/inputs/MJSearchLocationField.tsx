@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react';
 import { IconMap, IconMapPinFilled } from '@tabler/icons-react';
+import { Loader } from '@mantine/core';
 import type { SetValues } from '@mantine/form';
 import { useClickOutside, useDebouncedCallback } from '@mantine/hooks';
 import MJTextinput from '@/components/atoms/inputs/MJTextinput';
@@ -32,13 +33,12 @@ export default function MJSearchLocationField<T extends object>({
   const ref = useClickOutside(() => setOpened(false));
 
   const handleSearch = useDebouncedCallback((term: string) => {
-    if (term.length === 0) {
+    if (term.length >= 6) {
+      setOpened(true);
+    } else {
       setOpened(false);
-      setValue('');
-      return;
     }
     setValue(term);
-    setOpened(true);
   }, 0);
 
   const { data: mapleBoxData, isLoading: mapleBoxIsLoading } = useGetMapleBoxGeoLocation(value);
@@ -71,7 +71,7 @@ export default function MJSearchLocationField<T extends object>({
         leftSection={<IconMap />}
         size={size}
         autoComplete="off"
-        onFocus={() => setOpened(true)}
+        //onFocus={() => setOpened(true)}
         placeholder="Search location"
         value={value}
         onChange={(event) => handleSearch(event.currentTarget.value)}
@@ -80,7 +80,7 @@ export default function MJSearchLocationField<T extends object>({
       />
       {opened && (
         <div className=" bg-white shadow rounded-md px-2 py-5 space-y-1 absolute w-full z-40 left-0 top-16 overflow-y-scroll max-h-60">
-          {mapleBoxIsLoading && <p>Loading...</p>}
+          {mapleBoxIsLoading && <Loader size={'sm'} />}
           {!mapleBoxIsLoading && mapleBoxData?.length === 0 && <p>No results found</p>}
           {!mapleBoxIsLoading &&
             mapleBoxData?.map((result: MJGoogleLocation, index: number) => (

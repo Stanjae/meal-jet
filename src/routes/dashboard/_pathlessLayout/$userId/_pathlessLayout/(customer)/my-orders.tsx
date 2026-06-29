@@ -6,7 +6,7 @@ export const Route = createFileRoute(
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/my-orders'
 )({
   component: RouteComponent,
-  beforeLoad: () => requireRole(UserType.CUSTOMER),
+  beforeLoad: () => requireRole([UserType.CUSTOMER]),
 });
 
 function RouteComponent() {

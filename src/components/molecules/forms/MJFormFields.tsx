@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReactElement } from 'react';
+import { IconAt } from '@tabler/icons-react';
 import { Grid } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
+import MJDateInput from '@/components/atoms/inputs/MJDateInput';
 import MJDocumentUpload from '@/components/atoms/inputs/MJDocumentUpload';
 import MJImageUpload from '@/components/atoms/inputs/MJImageUpload';
 import MJMultiSelect from '@/components/atoms/inputs/MJMultiSelect';
 import MJNumberInput from '@/components/atoms/inputs/MJNumberInput';
+import MJSelect from '@/components/atoms/inputs/MJSelect';
 import MJTextArea from '@/components/atoms/inputs/MJTextArea';
 import MJTextinput from '@/components/atoms/inputs/MJTextinput';
+import { RIDER_IDENTIFICATION_TYPES, VEHICLES_TYPE } from '@/lib/constants';
 import { ModifiedCuisineTypes, ModifiedRestaurantTags } from '@/lib/constants/vendor';
 import type { MJTransformedFormField } from '@/lib/types';
 import {
@@ -22,11 +26,18 @@ import MJSearchLocationField from '../inputs/MJSearchLocationField';
 type Props<T extends object> = {
   fields: MJTransformedFormField[];
   form: UseFormReturnType<T>;
+  disabledFields?: string[];
 };
 
-function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElement {
-  const selectFields = { cuisineTypes: ModifiedCuisineTypes, tags: ModifiedRestaurantTags };
+function MJFormFields<T extends object>({ fields, form, disabledFields }: Props<T>): ReactElement {
+  const selectFields = {
+    cuisineTypes: ModifiedCuisineTypes,
+    tags: ModifiedRestaurantTags,
+    vehicle_type: VEHICLES_TYPE,
+    identification_type: RIDER_IDENTIFICATION_TYPES,
+  };
 
+  const disabledNewFields = new Set(disabledFields ?? []);
   return (
     <Grid>
       {fields.map((field) => {
@@ -37,6 +48,22 @@ function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElemen
                 key={field.name}
                 {...form.getInputProps(field.name)}
                 label={field.title}
+                disabled={disabledNewFields.has(field.name)}
+              />
+            </Grid.Col>
+          );
+        }
+        if (field.type === 'email') {
+          return (
+            <Grid.Col span={6} key={field.name}>
+              <MJTextinput
+                key={field.name}
+                leftSectionPointerEvents="none"
+                {...form.getInputProps(field.name)}
+                label={field.title}
+                type={field.type}
+                leftSection={<IconAt size={16} />}
+                disabled={disabledNewFields.has(field.name)}
               />
             </Grid.Col>
           );
@@ -48,6 +75,7 @@ function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElemen
                 key={field.name}
                 {...form.getInputProps(field.name)}
                 label={field.title}
+                disabled={disabledNewFields.has(field.name)}
               />
             </Grid.Col>
           );
@@ -59,6 +87,7 @@ function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElemen
                 key={field.name}
                 {...form.getInputProps(field.name)}
                 label={field.title}
+                disabled={disabledNewFields.has(field.name)}
               />
             </Grid.Col>
           );
@@ -72,6 +101,19 @@ function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElemen
                 label={field.title}
                 data={selectFields[field.name as keyof typeof selectFields]}
                 clearable
+              />
+            </Grid.Col>
+          );
+        }
+
+        if (field.type === 'select') {
+          return (
+            <Grid.Col span={6} key={field.name}>
+              <MJSelect
+                key={field.name}
+                {...form.getInputProps(field.name)}
+                label={field.title}
+                data={selectFields[field.name as keyof typeof selectFields]}
               />
             </Grid.Col>
           );
@@ -107,6 +149,20 @@ function MJFormFields<T extends object>({ fields, form }: Props<T>): ReactElemen
                 defaultValue={file}
                 setValues={form.setValues}
                 error={form.errors[field.name] as unknown as string}
+              />
+            </Grid.Col>
+          );
+        }
+
+        if (field.type === 'date') {
+          return (
+            <Grid.Col span={12} key={field.name}>
+              <MJDateInput
+                key={field.name}
+                {...form.getInputProps(field.name)}
+                label={field.title}
+                valueFormat={'YYYY-MM-DD'}
+                disabled={disabledNewFields.has(field.name)}
               />
             </Grid.Col>
           );
