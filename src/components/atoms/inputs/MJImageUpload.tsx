@@ -42,9 +42,6 @@ const MJImageUpload = ({ name, setValues, error, defaultValue, className }: Prop
       [name]: null,
     });
   };
-
-  console.log('file', defaultValue, imageUrl);
-
   const defaultClassName =
     className ||
     ' border border-dashed h-28 w-28 rounded-full relative overflow-hidden flex items-center justify-center';

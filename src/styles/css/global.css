@@ -17,7 +17,7 @@ body,
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: var(--mantine-font-family);
   color: var(--mantine-color-gray-8);
 
@@ -105,4 +105,208 @@ h6 {
 }
 
 .wallet-bg::before {
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes bar-grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--target-width);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes progress-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 50;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.smoke-animation {
+  /* Set this to the width and height of ONE single frame */
+  width: 70px;
+  height: 70px;
+
+  /* Link your sprite sheet image */
+  background-image: url('../../assets/smoke-sprite-reverse.png');
+  background-repeat: no-repeat;
+  background-size: auto 100%; /* Ensures the height matches your container */
+
+  /* Run the animation infinitely */
+  animation: play-smoke 0.6s steps(4) infinite;
+}
+
+/* Define the frame-by-frame movement */
+@keyframes play-smoke {
+  from {
+    background-position: 0px 0px;
+  }
+  to {
+    /* Move the background left by the total width of the sequence */
+    /* If you have 4 frames of 200px, the total movement is -800px */
+    background-position: -1000px 0px;
+  }
+}
+
+.animate-moveBike {
+  animation: moveBike 16s linear infinite;
+}
+@keyframes moveBike {
+  0% {
+    transform: translateX(-300px);
+  }
+  10% {
+    transform: translateX(0px);
+  }
+  20% {
+    transform: translateX(300px);
+  }
+  30% {
+    transform: translateX(600px);
+  }
+  40% {
+    transform: translateX(900px);
+  }
+  50% {
+    transform: translateX(1200px);
+  }
+  60% {
+    transform: translateX(1500px);
+  }
+  70% {
+    transform: translateX(1800px);
+  }
+  80% {
+    transform: translateX(2100px);
+  }
+  90% {
+    transform: translateX(2400px);
+  }
+  100% {
+    transform: translateX(2700px);
+  }
+}
+
+.road {
+  height: 20%;
+  position: relative;
+  box-sizing: border-box;
+  border-bottom: 10px solid gray;
+  border-top: 10px solid gray;
+  background-color: dimgray;
 }

@@ -15,12 +15,17 @@ export const useGetBankNames = () => {
       return data as MJBankApiResponse;
     },
     select: (data) => {
+      const seen = new Set();
       return data.data
+        .filter((bank: MJBanksResult) => {
+          if (seen.has(bank.code)) return false;
+          seen.add(bank.code);
+          return true;
+        })
         .map((feature: MJBanksResult) => ({
           label: feature.name,
           value: feature.code,
-        }))
-        .filter((bank) => !['50739', '057'].includes(bank.value)); // Exclude banks with code 'nuban'
+        }));
     },
   });
 };
@@ -79,6 +84,6 @@ export const useGetMapleBoxGeoLocation = (query: string) => {
         };
       });
     },
-    enabled: query.length > 4, // Only run the query if there's a search term
+    enabled: query.length > 6, // Only run the query if there's a search term
   });
 };

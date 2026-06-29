@@ -10,7 +10,7 @@ import { requireRole } from '@/lib/utils/helpers/helpers';
 export const Route = createFileRoute('/dashboard/_pathlessLayout/(select-store)/select-store')({
   component: RouteComponent,
   beforeLoad: async () => {
-    requireRole(UserType.VENDOR);
+    requireRole([UserType.VENDOR]);
     try {
       const result = await vendorClient.vendorProfileCount();
       if (result.data.count == 0) {

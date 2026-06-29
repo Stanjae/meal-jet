@@ -3,7 +3,7 @@ import MJButton from '@/components/atoms/buttons/MJButton';
 import MJFormArrayField from '@/components/molecules/forms/MJFormArrayField';
 import MJFormFields from '@/components/molecules/forms/MJFormFields';
 import { useCreateVendor } from '@/lib/api/services/vendor';
-import { useVendorOnboardingForm } from '@/lib/hooks/useVendorOnboarding';
+import { useVendorOnboardingForm } from '@/lib/hooks';
 import { transformFormFields } from '@/lib/utils/helpers/helpers';
 import { VENDOR_FORM_STEPS } from '@/lib/utils/schema';
 

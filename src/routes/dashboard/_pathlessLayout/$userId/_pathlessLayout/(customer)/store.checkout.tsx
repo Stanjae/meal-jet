@@ -36,7 +36,7 @@ export const Route = createFileRoute(
 )({
   component: RouteComponent,
   validateSearch: checkoutSearchSchema,
-  beforeLoad: () => requireRole(UserType.CUSTOMER),
+  beforeLoad: () => requireRole([UserType.CUSTOMER]),
 });
 
 function RouteComponent() {

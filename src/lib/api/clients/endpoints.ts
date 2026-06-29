@@ -40,4 +40,8 @@ export const ENDPOINTS = {
 
   //payments
   initializePayment: '/payments/initialize',
+
+  //rider
+  createRider: '/rider/create-rider',
+  checkRiderApprovalStatus: '/rider/is-rider-approved',
 };

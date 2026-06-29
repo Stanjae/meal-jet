@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications';
 import authClient from '../api/clients/auth';
 import { useCreateCustomerSignup, useLogin, useLogout } from '../api/services';
 import { useMealJetStore } from '../store/zustand.store';
+import { UserType } from '../types';
 import type { LoginFormData, SignupFormData } from '../utils/schema';
 
 const useAuth = () => {
@@ -24,7 +25,12 @@ const useAuth = () => {
         color: 'green',
       });
       navigate({
-        to: payload.role === 'customer' ? '/auth/signup' : '/auth/vendor-signup',
+        to:
+          payload.role === UserType.CUSTOMER
+            ? '/auth/signup'
+            : payload.role === UserType.ADMIN
+              ? '/auth/rider-signup'
+              : `/auth/${payload.role.toLowerCase()}-signup`,
         hash: 'awaiting-verification',
       });
     } catch (err) {
@@ -47,7 +53,6 @@ const useAuth = () => {
         color: 'green',
       });
       const { user } = response.data;
-      console.log('Login response:', response);
 
       if (user.emailVerified && ['banned', 'suspended'].includes(user.status)) {
         notifications.show({
@@ -62,11 +67,13 @@ const useAuth = () => {
         setUser(user);
         navigate({
           to:
-            user.role === 'admin'
+            user.role === UserType.ADMIN
               ? '/admin-dashboard/home'
-              : user.role === 'vendor'
-                ? `/dashboard/${user?.vendorCount > 0 ? 'select-store' : 'onboarding'}`
-                : '/dashboard/$userId',
+              : user.role === UserType.VENDOR
+                ? `/dashboard/${user?.hasProfile ? 'select-store' : 'onboarding'}`
+                : user.role === UserType.RIDER
+                  ? `/dashboard/${user?.hasProfile ? '$userId' : 'onboarding'}`
+                  : '/dashboard/$userId',
           params: {
             userId: user.id,
           },

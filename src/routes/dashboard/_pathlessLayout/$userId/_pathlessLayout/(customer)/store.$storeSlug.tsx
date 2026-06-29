@@ -24,7 +24,7 @@ export const Route = createFileRoute(
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/store/$storeSlug'
 )({
   component: RouteComponent,
-  beforeLoad: () => requireRole(UserType.CUSTOMER),
+  beforeLoad: () => requireRole([UserType.CUSTOMER]),
   loader: async ({ params: { storeSlug } }) => await vendorClient.getVendorProfile(storeSlug),
 });
 
