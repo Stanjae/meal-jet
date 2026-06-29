@@ -35,13 +35,16 @@ export type FormFieldType =
   | 'text'
   | 'textarea'
   | 'multiselect'
+  | 'select'
   | 'phone'
   | 'file'
   | 'addressSearch'
   | 'group'
   | 'image'
   | 'number'
-  | 'currency';
+  | 'currency'
+  | 'email'
+  | 'date';
 
 export type MJTransformedFormField = {
   title: string;

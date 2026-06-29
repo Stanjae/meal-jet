@@ -219,14 +219,15 @@ function RouteComponent() {
           </Paper>
 
           <div className="space-y-3 mt-4">
-            <MJButton variant="outline" fullWidth rightSection={<IconExternalLink />}>
-              <Link
-                to={`/dashboard/$userId/track-orders/$checkoutId`}
-                params={{ userId: user?.id as string, checkoutId: checkoutId }}
-              >
+            <Link
+              className="block"
+              to={`/dashboard/$userId/track-orders/$checkoutId`}
+              params={{ userId: user?.id as string, checkoutId: checkoutId }}
+            >
+              <MJButton variant="outline" fullWidth rightSection={<IconExternalLink />}>
                 Track My Orders
-              </Link>
-            </MJButton>
+              </MJButton>
+            </Link>
             <MJButton variant="outline" fullWidth>
               Back to Dashboard
             </MJButton>

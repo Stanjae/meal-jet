@@ -1,4 +1,5 @@
-import { useLocation } from '@tanstack/react-router';
+import { IconArrowNarrowLeft } from '@tabler/icons-react';
+import { Link, useLocation } from '@tanstack/react-router';
 import { Box, Divider } from '@mantine/core';
 import MJAlert from '@/components/atoms/alerts/MJAlert';
 import MJButton from '@/components/atoms/buttons/MJButton';
@@ -14,6 +15,7 @@ const AuthSignupForm = ({ type }: { type: UserType }) => {
   const form = useMealjetForm({
     schema: signupSchema,
     defaultValues: { ...signUpDefaultValuesCustomer, role: type },
+    validateInputOnChange: true,
   });
 
   const { handleSignUp } = useAuth();
@@ -22,18 +24,32 @@ const AuthSignupForm = ({ type }: { type: UserType }) => {
   return (
     <Box>
       {location.hash === 'awaiting-verification' ? (
-        <MJAlert
-          title={'Verification Pending'}
-          className=" mt-3"
-          message={
-            'Thank you for signing up! Please check your email for instructions on how to verify your account. Once verified, you can log in and start using our services.'
-          }
-        />
+        <div>
+          <MJAlert
+            title={'Verification Pending'}
+            className="mt-3"
+            message={
+              'Thank you for signing up! Please check your email for instructions on how to verify your account. Once verified, you can log in and start using our services.'
+            }
+          />
+          <div className="flex justify-end mt-4">
+            <Link to="/auth/login">
+              <MJButton
+                leftSection={<IconArrowNarrowLeft />}
+                variant="transparent"
+                className="ml-auto"
+                radius={'md'}
+              >
+                Go to Login
+              </MJButton>
+            </Link>
+          </div>
+        </div>
       ) : (
-        <form onSubmit={form.onSubmit(handleSignUp)} className=" space-y-2">
+        <form onSubmit={form.onSubmit(handleSignUp)} className="space-y-2">
           <MJTextinput
             radius={'md'}
-            label="Name"
+            label="Username"
             placeholder="Enter your username"
             {...form.getInputProps('username')}
             key={form.key('username')}
@@ -54,6 +70,7 @@ const AuthSignupForm = ({ type }: { type: UserType }) => {
           />
           <MJButton
             loading={form.submitting}
+            disabled={!form.isValid() || form.submitting}
             size="md"
             radius={'md'}
             mt={30}

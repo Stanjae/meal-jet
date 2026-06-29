@@ -39,7 +39,7 @@ export type IUser = {
   fcmToken?: string;
   lastLogin?: Date;
   relatedEntityStatus: 'approved' | 'in-review' | 'pending';
-  vendorCount: number;
+  hasProfile: boolean;
   location: ILocation;
 };
 

@@ -1,36 +1,22 @@
 import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
-import { createFileRoute, Link, Outlet, redirect, useRouterState } from '@tanstack/react-router';
-import { AppShell, Avatar, Burger, Group, NavLink } from '@mantine/core';
+import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
+import { AppShell, Burger, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import MJLogo from '@/components/atoms/logo/MJLogo';
-import MJAvatarDropdown from '@/components/molecules/dropdowns/MJDropdown';
-import VendorDropdown from '@/components/molecules/dropdowns/VendorDropdown';
 import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
-import AddtoCart from '@/components/organisms/cart/AddtoCart';
+import DisplayAuthAvatar from '@/components/organisms/auth/DisplayAuthAvatar';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
-import { dasboardDropdownOptions, multiRoleRoutes } from '@/lib/constants';
-import { useAuth } from '@/lib/hooks';
+import { multiRoleRoutes } from '@/lib/constants';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
-import { requireAuth } from '@/lib/utils/helpers/helpers';
 
 export const Route = createFileRoute('/dashboard/_pathlessLayout/$userId/_pathlessLayout')({
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
-    const { user } = requireAuth();
-
-    // Verify userId in URL matches current user
-    if (user.id !== params.userId) {
-      throw redirect({ to: '/dashboard/' + user.id });
-    }
-
-    return { user };
-  },
   notFoundComponent: () => <NotFoundComponent errorType="404" />,
 });
 
 function RouteComponent() {
-  const { user, vendor, setVendorProfile } = useMealJetStore((state) => state);
+  const { user } = useMealJetStore((state) => state);
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -40,18 +26,6 @@ function RouteComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const navigation = multiRoleRoutes[user?.role as keyof typeof multiRoleRoutes] || [];
-
-  const { handleLogout } = useAuth();
-
-  const avatarOptions = dasboardDropdownOptions.map((option) => {
-    if (option.value === 'logout') {
-      return {
-        ...option,
-        action: handleLogout,
-      };
-    }
-    return option;
-  });
 
   const handleMainColor = () => {
     const pathSegments = pathname.split('/')[pathname.split('/').length - 1];
@@ -93,17 +67,7 @@ function RouteComponent() {
             </section>
           )}
         </Group>
-        <Group>
-          {user?.role === UserType.CUSTOMER && !pathname.includes('checkout') ? (
-            <AddtoCart />
-          ) : user?.role === UserType.VENDOR ? (
-            <VendorDropdown setVendorProfile={setVendorProfile} defaultValue={vendor} />
-          ) : null}
-          <MJAvatarDropdown
-            items={avatarOptions}
-            target={<Avatar name={user?.username as string} color="initials" />}
-          />
-        </Group>
+        <DisplayAuthAvatar />
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <section>

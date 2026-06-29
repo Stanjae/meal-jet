@@ -1,4 +1,3 @@
-// restaurant-form.ts
 import { useState } from 'react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { useForm } from '@mantine/form';
@@ -52,7 +51,7 @@ const STEP_FIELDS: Record<number, FieldPath[]> = {
   4: ['bankDetails.bankName', 'bankDetails.accountNumber', 'bankDetails.accountName'],
 };
 
-export function useVendorOnboardingForm() {
+export default function useVendorOnboardingForm() {
   const [activeStep, setActiveStep] = useState(0);
   const totalSteps = VENDOR_FORM_STEPS.length;
 

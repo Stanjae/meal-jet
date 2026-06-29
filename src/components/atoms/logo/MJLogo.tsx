@@ -6,10 +6,11 @@ type Props = {
   height?: number;
   src?: string;
   className?: string;
+  mode?: 'light' | 'dark';
 };
 
-const MJLogo = ({ width, height, src, className }: Props) => {
-  const hamburgerImg = src || '/logo.png';
+const MJLogo = ({ width, height, src, className, mode = 'light' }: Props) => {
+  const hamburgerImg = mode === 'dark' ? '/logo-dark.png' : src || '/logo.png';
   return (
     <Link to="/">
       <Image

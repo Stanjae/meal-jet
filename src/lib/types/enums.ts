@@ -1,6 +1,6 @@
 export enum UserType {
   ADMIN = 'admin',
-  DRIVER = 'driver',
+  RIDER = 'rider',
   CUSTOMER = 'customer',
   VENDOR = 'vendor',
 }

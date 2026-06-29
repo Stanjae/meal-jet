@@ -9,18 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthVerifyNowRouteImport } from './routes/auth/verify-now'
 import { Route as AuthVendorSignupRouteImport } from './routes/auth/vendor-signup'
+import { Route as AuthRiderSignupRouteImport } from './routes/auth/rider-signup'
 import { Route as AuthAccountVerificationRouteImport } from './routes/auth/account-verification'
 import { Route as AdminDashboardHomeRouteImport } from './routes/admin-dashboard/home'
 import { Route as DashboardPathlessLayoutRouteRouteImport } from './routes/dashboard/_pathlessLayout/route'
 import { Route as AuthPathlessLayoutRouteRouteImport } from './routes/auth/_pathlessLayout/route'
+import { Route as publicRoutesPathlessLayoutRouteRouteImport } from './routes/(publicRoutes)/_pathlessLayout/route'
 import { Route as DashboardPathlessLayoutIndexRouteImport } from './routes/dashboard/_pathlessLayout/index'
+import { Route as publicRoutesPathlessLayoutIndexRouteImport } from './routes/(publicRoutes)/_pathlessLayout/index'
 import { Route as AuthPathlessLayoutSignupRouteImport } from './routes/auth/_pathlessLayout/signup'
 import { Route as AuthPathlessLayoutLoginRouteImport } from './routes/auth/_pathlessLayout/login'
+import { Route as publicRoutesPathlessLayoutBecomeAVendorRouteImport } from './routes/(publicRoutes)/_pathlessLayout/become-a-vendor'
+import { Route as publicRoutesPathlessLayoutBecomeARiderRouteImport } from './routes/(publicRoutes)/_pathlessLayout/become-a-rider'
+import { Route as publicRoutesPathlessLayoutAboutRouteImport } from './routes/(publicRoutes)/_pathlessLayout/about'
 import { Route as DashboardPathlessLayoutselectStoreSelectStoreRouteImport } from './routes/dashboard/_pathlessLayout/(select-store)/select-store'
 import { Route as DashboardPathlessLayoutonboardingOnboardingRouteImport } from './routes/dashboard/_pathlessLayout/(onboarding)/onboarding'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/route'
@@ -38,19 +42,9 @@ import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerStoreStoreS
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutcustomerPaymentConfirmationCheckoutIdRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(customer)/payment-confirmation.$checkoutId'
 import { Route as DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRouteImport } from './routes/dashboard/_pathlessLayout/$userId/_pathlessLayout/(vendor)/menu-management/edit.$itemId'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthVerifyNowRoute = AuthVerifyNowRouteImport.update({
@@ -61,6 +55,11 @@ const AuthVerifyNowRoute = AuthVerifyNowRouteImport.update({
 const AuthVendorSignupRoute = AuthVendorSignupRouteImport.update({
   id: '/vendor-signup',
   path: '/vendor-signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthRiderSignupRoute = AuthRiderSignupRouteImport.update({
+  id: '/rider-signup',
+  path: '/rider-signup',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthAccountVerificationRoute = AuthAccountVerificationRouteImport.update({
@@ -83,11 +82,22 @@ const AuthPathlessLayoutRouteRoute = AuthPathlessLayoutRouteRouteImport.update({
   id: '/_pathlessLayout',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const publicRoutesPathlessLayoutRouteRoute =
+  publicRoutesPathlessLayoutRouteRouteImport.update({
+    id: '/(publicRoutes)/_pathlessLayout',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DashboardPathlessLayoutIndexRoute =
   DashboardPathlessLayoutIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => DashboardPathlessLayoutRouteRoute,
+  } as any)
+const publicRoutesPathlessLayoutIndexRoute =
+  publicRoutesPathlessLayoutIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRoutesPathlessLayoutRouteRoute,
   } as any)
 const AuthPathlessLayoutSignupRoute =
   AuthPathlessLayoutSignupRouteImport.update({
@@ -100,6 +110,24 @@ const AuthPathlessLayoutLoginRoute = AuthPathlessLayoutLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthPathlessLayoutRouteRoute,
 } as any)
+const publicRoutesPathlessLayoutBecomeAVendorRoute =
+  publicRoutesPathlessLayoutBecomeAVendorRouteImport.update({
+    id: '/become-a-vendor',
+    path: '/become-a-vendor',
+    getParentRoute: () => publicRoutesPathlessLayoutRouteRoute,
+  } as any)
+const publicRoutesPathlessLayoutBecomeARiderRoute =
+  publicRoutesPathlessLayoutBecomeARiderRouteImport.update({
+    id: '/become-a-rider',
+    path: '/become-a-rider',
+    getParentRoute: () => publicRoutesPathlessLayoutRouteRoute,
+  } as any)
+const publicRoutesPathlessLayoutAboutRoute =
+  publicRoutesPathlessLayoutAboutRouteImport.update({
+    id: '/about',
+    path: '/about',
+    getParentRoute: () => publicRoutesPathlessLayoutRouteRoute,
+  } as any)
 const DashboardPathlessLayoutselectStoreSelectStoreRoute =
   DashboardPathlessLayoutselectStoreSelectStoreRouteImport.update({
     id: '/(select-store)/select-store',
@@ -228,16 +256,19 @@ const DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdR
   )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/auth': typeof AuthPathlessLayoutRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/dashboard': typeof DashboardPathlessLayoutRouteRouteWithChildren
   '/admin-dashboard/home': typeof AdminDashboardHomeRoute
   '/auth/account-verification': typeof AuthAccountVerificationRoute
+  '/auth/rider-signup': typeof AuthRiderSignupRoute
   '/auth/vendor-signup': typeof AuthVendorSignupRoute
   '/auth/verify-now': typeof AuthVerifyNowRoute
+  '/about': typeof publicRoutesPathlessLayoutAboutRoute
+  '/become-a-rider': typeof publicRoutesPathlessLayoutBecomeARiderRoute
+  '/become-a-vendor': typeof publicRoutesPathlessLayoutBecomeAVendorRoute
   '/auth/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/signup': typeof AuthPathlessLayoutSignupRoute
+  '/': typeof publicRoutesPathlessLayoutIndexRoute
   '/dashboard/': typeof DashboardPathlessLayoutIndexRoute
   '/dashboard/$userId': typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren
   '/dashboard/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
@@ -257,15 +288,18 @@ export interface FileRoutesByFullPath {
   '/dashboard/$userId/menu-management/edit/$itemId': typeof DashboardPathlessLayoutUserIdPathlessLayoutvendorMenuManagementEditItemIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/auth': typeof AuthPathlessLayoutRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/admin-dashboard/home': typeof AdminDashboardHomeRoute
   '/auth/account-verification': typeof AuthAccountVerificationRoute
+  '/auth/rider-signup': typeof AuthRiderSignupRoute
   '/auth/vendor-signup': typeof AuthVendorSignupRoute
   '/auth/verify-now': typeof AuthVerifyNowRoute
+  '/about': typeof publicRoutesPathlessLayoutAboutRoute
+  '/become-a-rider': typeof publicRoutesPathlessLayoutBecomeARiderRoute
+  '/become-a-vendor': typeof publicRoutesPathlessLayoutBecomeAVendorRoute
   '/auth/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/signup': typeof AuthPathlessLayoutSignupRoute
+  '/': typeof publicRoutesPathlessLayoutIndexRoute
   '/dashboard': typeof DashboardPathlessLayoutIndexRoute
   '/dashboard/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
   '/dashboard/select-store': typeof DashboardPathlessLayoutselectStoreSelectStoreRoute
@@ -285,17 +319,21 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/about': typeof AboutRoute
+  '/(publicRoutes)/_pathlessLayout': typeof publicRoutesPathlessLayoutRouteRouteWithChildren
   '/auth/_pathlessLayout': typeof AuthPathlessLayoutRouteRouteWithChildren
   '/dashboard/_pathlessLayout': typeof DashboardPathlessLayoutRouteRouteWithChildren
   '/admin-dashboard/home': typeof AdminDashboardHomeRoute
   '/auth/account-verification': typeof AuthAccountVerificationRoute
+  '/auth/rider-signup': typeof AuthRiderSignupRoute
   '/auth/vendor-signup': typeof AuthVendorSignupRoute
   '/auth/verify-now': typeof AuthVerifyNowRoute
+  '/(publicRoutes)/_pathlessLayout/about': typeof publicRoutesPathlessLayoutAboutRoute
+  '/(publicRoutes)/_pathlessLayout/become-a-rider': typeof publicRoutesPathlessLayoutBecomeARiderRoute
+  '/(publicRoutes)/_pathlessLayout/become-a-vendor': typeof publicRoutesPathlessLayoutBecomeAVendorRoute
   '/auth/_pathlessLayout/login': typeof AuthPathlessLayoutLoginRoute
   '/auth/_pathlessLayout/signup': typeof AuthPathlessLayoutSignupRoute
+  '/(publicRoutes)/_pathlessLayout/': typeof publicRoutesPathlessLayoutIndexRoute
   '/dashboard/_pathlessLayout/': typeof DashboardPathlessLayoutIndexRoute
   '/dashboard/_pathlessLayout/$userId/_pathlessLayout': typeof DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteWithChildren
   '/dashboard/_pathlessLayout/(onboarding)/onboarding': typeof DashboardPathlessLayoutonboardingOnboardingRoute
@@ -317,16 +355,19 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/auth'
-    | '/about'
     | '/dashboard'
     | '/admin-dashboard/home'
     | '/auth/account-verification'
+    | '/auth/rider-signup'
     | '/auth/vendor-signup'
     | '/auth/verify-now'
+    | '/about'
+    | '/become-a-rider'
+    | '/become-a-vendor'
     | '/auth/login'
     | '/auth/signup'
+    | '/'
     | '/dashboard/'
     | '/dashboard/$userId'
     | '/dashboard/onboarding'
@@ -346,15 +387,18 @@ export interface FileRouteTypes {
     | '/dashboard/$userId/menu-management/edit/$itemId'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/auth'
-    | '/about'
     | '/admin-dashboard/home'
     | '/auth/account-verification'
+    | '/auth/rider-signup'
     | '/auth/vendor-signup'
     | '/auth/verify-now'
+    | '/about'
+    | '/become-a-rider'
+    | '/become-a-vendor'
     | '/auth/login'
     | '/auth/signup'
+    | '/'
     | '/dashboard'
     | '/dashboard/onboarding'
     | '/dashboard/select-store'
@@ -373,17 +417,21 @@ export interface FileRouteTypes {
     | '/dashboard/$userId/menu-management/edit/$itemId'
   id:
     | '__root__'
-    | '/'
     | '/auth'
-    | '/about'
+    | '/(publicRoutes)/_pathlessLayout'
     | '/auth/_pathlessLayout'
     | '/dashboard/_pathlessLayout'
     | '/admin-dashboard/home'
     | '/auth/account-verification'
+    | '/auth/rider-signup'
     | '/auth/vendor-signup'
     | '/auth/verify-now'
+    | '/(publicRoutes)/_pathlessLayout/about'
+    | '/(publicRoutes)/_pathlessLayout/become-a-rider'
+    | '/(publicRoutes)/_pathlessLayout/become-a-vendor'
     | '/auth/_pathlessLayout/login'
     | '/auth/_pathlessLayout/signup'
+    | '/(publicRoutes)/_pathlessLayout/'
     | '/dashboard/_pathlessLayout/'
     | '/dashboard/_pathlessLayout/$userId/_pathlessLayout'
     | '/dashboard/_pathlessLayout/(onboarding)/onboarding'
@@ -404,34 +452,19 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
+  publicRoutesPathlessLayoutRouteRoute: typeof publicRoutesPathlessLayoutRouteRouteWithChildren
   DashboardPathlessLayoutRouteRoute: typeof DashboardPathlessLayoutRouteRouteWithChildren
   AdminDashboardHomeRoute: typeof AdminDashboardHomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/verify-now': {
@@ -446,6 +479,13 @@ declare module '@tanstack/react-router' {
       path: '/vendor-signup'
       fullPath: '/auth/vendor-signup'
       preLoaderRoute: typeof AuthVendorSignupRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/rider-signup': {
+      id: '/auth/rider-signup'
+      path: '/rider-signup'
+      fullPath: '/auth/rider-signup'
+      preLoaderRoute: typeof AuthRiderSignupRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/auth/account-verification': {
@@ -476,12 +516,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPathlessLayoutRouteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/(publicRoutes)/_pathlessLayout': {
+      id: '/(publicRoutes)/_pathlessLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicRoutesPathlessLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/_pathlessLayout/': {
       id: '/dashboard/_pathlessLayout/'
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardPathlessLayoutIndexRouteImport
       parentRoute: typeof DashboardPathlessLayoutRouteRoute
+    }
+    '/(publicRoutes)/_pathlessLayout/': {
+      id: '/(publicRoutes)/_pathlessLayout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicRoutesPathlessLayoutIndexRouteImport
+      parentRoute: typeof publicRoutesPathlessLayoutRouteRoute
     }
     '/auth/_pathlessLayout/signup': {
       id: '/auth/_pathlessLayout/signup'
@@ -496,6 +550,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthPathlessLayoutLoginRouteImport
       parentRoute: typeof AuthPathlessLayoutRouteRoute
+    }
+    '/(publicRoutes)/_pathlessLayout/become-a-vendor': {
+      id: '/(publicRoutes)/_pathlessLayout/become-a-vendor'
+      path: '/become-a-vendor'
+      fullPath: '/become-a-vendor'
+      preLoaderRoute: typeof publicRoutesPathlessLayoutBecomeAVendorRouteImport
+      parentRoute: typeof publicRoutesPathlessLayoutRouteRoute
+    }
+    '/(publicRoutes)/_pathlessLayout/become-a-rider': {
+      id: '/(publicRoutes)/_pathlessLayout/become-a-rider'
+      path: '/become-a-rider'
+      fullPath: '/become-a-rider'
+      preLoaderRoute: typeof publicRoutesPathlessLayoutBecomeARiderRouteImport
+      parentRoute: typeof publicRoutesPathlessLayoutRouteRoute
+    }
+    '/(publicRoutes)/_pathlessLayout/about': {
+      id: '/(publicRoutes)/_pathlessLayout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof publicRoutesPathlessLayoutAboutRouteImport
+      parentRoute: typeof publicRoutesPathlessLayoutRouteRoute
     }
     '/dashboard/_pathlessLayout/(select-store)/select-store': {
       id: '/dashboard/_pathlessLayout/(select-store)/select-store'
@@ -631,6 +706,7 @@ const AuthPathlessLayoutRouteRouteWithChildren =
 interface AuthRouteRouteChildren {
   AuthPathlessLayoutRouteRoute: typeof AuthPathlessLayoutRouteRouteWithChildren
   AuthAccountVerificationRoute: typeof AuthAccountVerificationRoute
+  AuthRiderSignupRoute: typeof AuthRiderSignupRoute
   AuthVendorSignupRoute: typeof AuthVendorSignupRoute
   AuthVerifyNowRoute: typeof AuthVerifyNowRoute
 }
@@ -638,6 +714,7 @@ interface AuthRouteRouteChildren {
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthPathlessLayoutRouteRoute: AuthPathlessLayoutRouteRouteWithChildren,
   AuthAccountVerificationRoute: AuthAccountVerificationRoute,
+  AuthRiderSignupRoute: AuthRiderSignupRoute,
   AuthVendorSignupRoute: AuthVendorSignupRoute,
   AuthVerifyNowRoute: AuthVerifyNowRoute,
 }
@@ -645,6 +722,28 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
+
+interface publicRoutesPathlessLayoutRouteRouteChildren {
+  publicRoutesPathlessLayoutAboutRoute: typeof publicRoutesPathlessLayoutAboutRoute
+  publicRoutesPathlessLayoutBecomeARiderRoute: typeof publicRoutesPathlessLayoutBecomeARiderRoute
+  publicRoutesPathlessLayoutBecomeAVendorRoute: typeof publicRoutesPathlessLayoutBecomeAVendorRoute
+  publicRoutesPathlessLayoutIndexRoute: typeof publicRoutesPathlessLayoutIndexRoute
+}
+
+const publicRoutesPathlessLayoutRouteRouteChildren: publicRoutesPathlessLayoutRouteRouteChildren =
+  {
+    publicRoutesPathlessLayoutAboutRoute: publicRoutesPathlessLayoutAboutRoute,
+    publicRoutesPathlessLayoutBecomeARiderRoute:
+      publicRoutesPathlessLayoutBecomeARiderRoute,
+    publicRoutesPathlessLayoutBecomeAVendorRoute:
+      publicRoutesPathlessLayoutBecomeAVendorRoute,
+    publicRoutesPathlessLayoutIndexRoute: publicRoutesPathlessLayoutIndexRoute,
+  }
+
+const publicRoutesPathlessLayoutRouteRouteWithChildren =
+  publicRoutesPathlessLayoutRouteRoute._addFileChildren(
+    publicRoutesPathlessLayoutRouteRouteChildren,
+  )
 
 interface DashboardPathlessLayoutUserIdPathlessLayoutRouteRouteChildren {
   DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute: typeof DashboardPathlessLayoutUserIdPathlessLayoutIndexRoute
@@ -721,9 +820,9 @@ const DashboardPathlessLayoutRouteRouteWithChildren =
   )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  AboutRoute: AboutRoute,
+  publicRoutesPathlessLayoutRouteRoute:
+    publicRoutesPathlessLayoutRouteRouteWithChildren,
   DashboardPathlessLayoutRouteRoute:
     DashboardPathlessLayoutRouteRouteWithChildren,
   AdminDashboardHomeRoute: AdminDashboardHomeRoute,
