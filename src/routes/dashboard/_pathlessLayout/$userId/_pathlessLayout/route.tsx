@@ -1,12 +1,17 @@
+import { useEffect } from 'react';
 import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { AppShell, Burger, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import MJLogo from '@/components/atoms/logo/MJLogo';
 import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
 import DisplayAuthAvatar from '@/components/organisms/auth/DisplayAuthAvatar';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
+import { ENDPOINTS } from '@/lib/api/clients';
 import { multiRoleRoutes } from '@/lib/constants';
+import socket from '@/lib/socket.io/socketConfig';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
 
@@ -17,6 +22,7 @@ export const Route = createFileRoute('/dashboard/_pathlessLayout/$userId/_pathle
 
 function RouteComponent() {
   const { user } = useMealJetStore((state) => state);
+  const queryClient = useQueryClient();
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -33,6 +39,26 @@ function RouteComponent() {
       return 'bg-primary/5';
     }
   };
+
+  useEffect(() => {
+    if (user?.role !== UserType.VENDOR) return;
+
+    const onNewOrder = (payload: { orderNumber: string }) => {
+      notifications.show({
+        title: 'New incoming order',
+        message: `Order ${payload.orderNumber} just arrived.`,
+        color: 'orange',
+      });
+
+      queryClient.invalidateQueries({ queryKey: [ENDPOINTS.getVendorOrders] });
+    };
+
+    socket.on('new_order', onNewOrder);
+
+    return () => {
+      socket.off('new_order', onNewOrder);
+    };
+  }, [queryClient, user?.role]);
 
   return (
     <AppShell
