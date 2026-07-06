@@ -9,7 +9,7 @@ import { Avatar, Badge, Divider, Grid, GridCol, Paper, SimpleGrid } from '@manti
 import MJButton from '@/components/atoms/buttons/MJButton';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
 import ordersClient from '@/lib/api/clients/orders';
-import { statusConfig, type TStatusConfig } from '@/lib/constants';
+import { statusConfig, type statusHistoryStates } from '@/lib/constants';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
 import { formatCurrency, requireRole } from '@/lib/utils/helpers/helpers';
@@ -63,7 +63,7 @@ function RouteComponent() {
           <h2 className="mb-3 font-semibold">Your Orders</h2>
           <div className="flex flex-col">
             {orders.map((order) => {
-              const { color } = statusConfig[order?.status as TStatusConfig];
+              const color = statusConfig[order?.status as statusHistoryStates]?.color ?? 'gray';
               const total =
                 (order?.subtotal || 0) + (order?.deliveryFee || 0) + (order?.serviceFee || 0);
               return (

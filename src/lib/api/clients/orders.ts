@@ -1,7 +1,15 @@
 import type {
   MJAddToCartItem,
+  TGetAllVendorOrdersParams,
+  TGetAllVendorOrdersResponse,
   TGetOrderDetailsResponse,
   THandleCheckoutResponse,
+  TRiderAcceptDispatchResponse,
+  TRiderUpdateDeliveryStatusPayload,
+  TRiderUpdateDeliveryStatusResponse,
+  TUpdateOrderStatusPayload,
+  TUpdateOrderStatusResponse,
+  TVendorRetryDispatchResponse,
 } from '@/lib/types';
 import Client from '../axiosInstance';
 import { ENDPOINTS } from './endpoints';
@@ -33,6 +41,71 @@ const ordersClient = {
    */
   getOrderDetails: async (checkoutId: string) => {
     return await Client.get<TGetOrderDetailsResponse>(`${ENDPOINTS.getOrderDetails}/${checkoutId}`);
+  },
+
+  /**
+   * Description - fetches all orders assigned to a vendor
+   * @param {string} vendorId - ID of the vendor to fetch orders for.
+   * @returns array of all orders
+   * @throws {Error} If the request fails.
+   */
+  getVendorOrders: async ({ vendorId, ...params }: TGetAllVendorOrdersParams) => {
+    return await Client.get<TGetAllVendorOrdersResponse>(
+      `${ENDPOINTS.getVendorOrders}/${vendorId}`,
+      { params }
+    );
+  },
+
+  /**
+   * Description - updates the status of an order by id
+   * @param {string} orderId - ID of the order to update.
+   * @param { TUpdateOrderStatusPayload} payload - The order update payload.
+   */
+  updateOrderStatus: async ({
+    orderId,
+    payload,
+  }: {
+    orderId: string;
+    payload: TUpdateOrderStatusPayload;
+  }) => {
+    return await Client.patch<TUpdateOrderStatusResponse>(
+      `${ENDPOINTS.updateOrderStatus}/${orderId}/status`,
+      payload
+    );
+  },
+
+  /**
+   * Description - vendor retries rider dispatch for a ready and unassigned order.
+   */
+  vendorRetryDispatch: async ({ orderId }: { orderId: string }) => {
+    return await Client.patch<TVendorRetryDispatchResponse>(
+      `${ENDPOINTS.vendorRetryDispatch}/${orderId}`
+    );
+  },
+
+  /**
+   * Description - rider accepts a dispatch offer for an order.
+   */
+  riderAcceptDispatch: async ({ orderId }: { orderId: string }) => {
+    return await Client.patch<TRiderAcceptDispatchResponse>(
+      `${ENDPOINTS.riderAcceptDispatch}/${orderId}`
+    );
+  },
+
+  /**
+   * Description - rider updates in-delivery order status.
+   */
+  riderUpdateDeliveryStatus: async ({
+    orderId,
+    payload,
+  }: {
+    orderId: string;
+    payload: TRiderUpdateDeliveryStatusPayload;
+  }) => {
+    return await Client.patch<TRiderUpdateDeliveryStatusResponse>(
+      `${ENDPOINTS.riderUpdateDeliveryStatus}/${orderId}`,
+      payload
+    );
   },
 };
 

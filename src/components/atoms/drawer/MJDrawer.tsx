@@ -2,7 +2,7 @@ import { Drawer, type DrawerProps } from '@mantine/core';
 
 type Props = DrawerProps & {
   children: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
 };
 const MJDrawer = ({ children, title, ...props }: Props) => {
   return (
