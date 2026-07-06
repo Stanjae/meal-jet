@@ -292,7 +292,7 @@ function OrderCard({
                   .filter((op) => op.quantity)
                   .map((addon, index) => (
                     <li key={index} className="text-xs text-gray-400">
-                      {addon.label} ·{' '}
+                      {addon.label}
                     </li>
                   ))}
               </ul>
