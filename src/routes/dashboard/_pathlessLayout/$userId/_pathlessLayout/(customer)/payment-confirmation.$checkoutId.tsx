@@ -63,7 +63,7 @@ function RouteComponent() {
           <h2 className="mb-3 font-semibold">Your Orders</h2>
           <div className="flex flex-col">
             {orders.map((order) => {
-              const { color } = statusConfig[order?.status as statusHistoryStates];
+              const color = statusConfig[order?.status as statusHistoryStates]?.color ?? 'gray';
               const total =
                 (order?.subtotal || 0) + (order?.deliveryFee || 0) + (order?.serviceFee || 0);
               return (
