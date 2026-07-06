@@ -20,6 +20,7 @@ export const useHandleCheckout = () => {
 export const useGetVendorOrders = (params: TGetAllVendorOrdersParams) => {
   return useQuery({
     queryKey: [ENDPOINTS.getVendorOrders, params],
+    enabled: Boolean(params.vendorId),
     queryFn: async () => await ordersClient.getVendorOrders(params),
   });
 };
