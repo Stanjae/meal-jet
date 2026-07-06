@@ -37,6 +37,11 @@ export const ENDPOINTS = {
   //orders
   checkout: '/orders/check-out',
   getOrderDetails: '/orders/get-order-details',
+  getVendorOrders: '/orders/get-vendor-orders',
+  updateOrderStatus: '/orders/update-order-status',
+  vendorRetryDispatch: '/orders/vendor/retry-dispatch',
+  riderAcceptDispatch: '/orders/rider/accept-dispatch',
+  riderUpdateDeliveryStatus: '/orders/rider/update-delivery-status',
 
   //payments
   initializePayment: '/payments/initialize',

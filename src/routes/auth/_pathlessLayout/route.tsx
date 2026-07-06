@@ -1,9 +1,13 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { Image } from '@mantine/core';
+import { checkAuthAuthRoute } from '@/lib/utils/middleware';
 import hamburgerImg from '../../../assets/hamburger.jpg';
 
 export const Route = createFileRoute('/auth/_pathlessLayout')({
   component: RouteComponent,
+  beforeLoad: async () => {
+    await checkAuthAuthRoute();
+  },
 });
 
 function RouteComponent() {

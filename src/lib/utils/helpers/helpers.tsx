@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { redirect } from '@tanstack/react-router';
@@ -10,6 +11,7 @@ import type { FormFieldType, MJTransformedFormField, UserType } from '@/lib/type
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(relativeTime);
 dayjs.extend(isBetween);
 
 dayjs.tz.setDefault('Africa/Lagos');
