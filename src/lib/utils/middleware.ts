@@ -90,9 +90,9 @@ export const checkAuthAuthRoute = async () => {
   try {
     const data = await authClient.isAuthenticated();
     const newUser = data?.data?.user;
+    if (!newUser) return;
     useMealJetStore.getState().setUser(newUser);
     redirectByRole(newUser);
-  } catch (e) {
     if (isRedirect(e)) {
       throw e; // let the router actually perform the redirect
     }
