@@ -90,12 +90,12 @@ export const checkAuthAuthRoute = async () => {
   try {
     const data = await authClient.isAuthenticated();
     const newUser = data?.data?.user;
-    if (!newUser) return;
     useMealJetStore.getState().setUser(newUser);
     redirectByRole(newUser);
+  } catch (e) {
     if (isRedirect(e)) {
       throw e; // let the router actually perform the redirect
     }
-    console.log('User is not authenticated, allowing access to /auth route', e);
+    console.error('User is not authenticated, allowing access to /auth route', e);
   }
 };
