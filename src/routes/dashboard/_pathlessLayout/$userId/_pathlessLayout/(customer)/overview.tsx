@@ -3,9 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { Grid, Image } from '@mantine/core';
 import girlGoofing from '@/assets/girl-goofing.jpg';
 import MJButton from '@/components/atoms/buttons/MJButton';
-import MJCarousel from '@/components/atoms/carousel/MJCarousel';
 import CustomerWallet from '@/components/organisms/wallet/CustomerWallet';
-import { mockCategories, mockDishes, mockFeaturedEvents, mockRecentOrders } from '@/lib/mock';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
 import { requireRole } from '@/lib/utils/helpers/helpers';
@@ -24,16 +22,6 @@ function RouteComponent() {
       <Grid>
         <Grid.Col span={7}>
           <div className=" space-y-3">
-            <MJCarousel
-              type="image"
-              delay={2000}
-              emblaOptions={{ loop: true }}
-              withIndicators
-              data={mockFeaturedEvents}
-              height={320}
-              withControls={false}
-            />
-
             <section>
               <div className=" flex items-center justify-between mb-2">
                 <h2 className=" text-lg font-semibold">Category</h2>
@@ -45,16 +33,6 @@ function RouteComponent() {
                   View All
                 </Link>
               </div>
-
-              <MJCarousel
-                type="category"
-                delay={2000}
-                slideSize="33.333%"
-                emblaOptions={{ loop: true }}
-                data={mockCategories}
-                height={142}
-                withControls={false}
-              />
             </section>
 
             <section>
@@ -68,16 +46,6 @@ function RouteComponent() {
                   View All
                 </Link>
               </div>
-
-              <MJCarousel
-                type="dishes"
-                delay={2050}
-                slideSize="33.333%"
-                emblaOptions={{ loop: true }}
-                data={mockDishes}
-                height={300}
-                withControls={false}
-              />
             </section>
 
             <section>
@@ -91,16 +59,6 @@ function RouteComponent() {
                   View All
                 </Link>
               </div>
-
-              <MJCarousel
-                type="order"
-                delay={2050}
-                slideSize="33.333%"
-                emblaOptions={{ loop: true }}
-                data={mockRecentOrders}
-                height={300}
-                withControls={false}
-              />
             </section>
           </div>
         </Grid.Col>

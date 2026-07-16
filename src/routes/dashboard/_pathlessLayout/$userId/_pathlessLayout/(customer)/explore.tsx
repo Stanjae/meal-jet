@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Grid } from '@mantine/core';
+import MJCarousel from '@/components/atoms/carousel/MJCarousel';
 import MJCardSkeleton from '@/components/atoms/loader/MJCardSkeleton';
 import VendorProfileCard from '@/components/molecules/cards/VendorProfileCard';
 import { useGetAllVendors } from '@/lib/api/services';
@@ -17,13 +17,20 @@ function RouteComponent() {
       <div>
         <h2 className="text-[20px] font-medium leading-7">All Vendors</h2>
         {isLoading && <MJCardSkeleton cols={3} type="vendor" totalCount={12} />}
-        <Grid>
+        <MJCarousel
+          slideSize={{ base: '100%', sm: '50%', md: '33.333333%' }}
+          slideGap={{ base: 'md', sm: 'lg' }}
+          height={250}
+        >
           {vendors?.data.vendors?.map((vendor) => (
-            <Grid.Col span={4} key={vendor.id}>
-              <VendorProfileCard vendor={vendor} />
-            </Grid.Col>
+            <VendorProfileCard vendor={vendor} />
           ))}
-        </Grid>
+        </MJCarousel>
+        <MJCarousel height={250} withControls={false}>
+          {vendors?.data.vendors?.map((vendor) => (
+            <VendorProfileCard vendor={vendor} />
+          ))}
+        </MJCarousel>
       </div>
     </section>
   );
