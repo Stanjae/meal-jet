@@ -31,7 +31,7 @@ const MJCardSkeleton = ({ cols, type, totalCount = 20 }: MJCardSkeletonProps) =>
     }
   };
   return (
-    <SimpleGrid cols={cols}>
+    <SimpleGrid cols={{ base: 1, sm: cols }}>
       {Array.from({ length: totalCount }).map((_, index) => renderCard(type, index))}
     </SimpleGrid>
   );

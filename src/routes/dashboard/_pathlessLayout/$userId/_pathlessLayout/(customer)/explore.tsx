@@ -15,18 +15,21 @@ function RouteComponent() {
   return (
     <section>
       <div>
-        <h2 className="text-[20px] font-medium leading-7">All Vendors</h2>
+        <div className="mb-6">
+          <p className="text-xs font-bold tracking-[0.16em] uppercase text-secondary">Explore</p>
+          <h1 className="mt-1 text-2xl md:text-4xl font-black text-gray-900 leading-tight">
+            Explore Vendors
+          </h1>
+          <p className="mt-1 text-sm text-gray-600 max-w-xl">
+            Discover a world of culinary delights with our diverse range of vendors.
+          </p>
+        </div>
         {isLoading && <MJCardSkeleton cols={3} type="vendor" totalCount={12} />}
         <MJCarousel
           slideSize={{ base: '100%', sm: '50%', md: '33.333333%' }}
           slideGap={{ base: 'md', sm: 'lg' }}
           height={250}
         >
-          {vendors?.data.vendors?.map((vendor) => (
-            <VendorProfileCard vendor={vendor} />
-          ))}
-        </MJCarousel>
-        <MJCarousel height={250} withControls={false}>
           {vendors?.data.vendors?.map((vendor) => (
             <VendorProfileCard vendor={vendor} />
           ))}
