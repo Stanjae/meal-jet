@@ -4,7 +4,7 @@ import {
   IconExternalLink,
   IconMapPinFilled,
 } from '@tabler/icons-react';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { Avatar, Badge, Divider, Grid, GridCol, Paper, SimpleGrid } from '@mantine/core';
 import MJButton from '@/components/atoms/buttons/MJButton';
 import NotFoundComponent from '@/components/organisms/notfound/NotFoundComponent';
@@ -38,6 +38,14 @@ function RouteComponent() {
   const user = useMealJetStore((state) => state.user);
 
   const { checkoutId } = Route.useParams();
+
+  const navigate = useNavigate();
+
+  const navigateTo = (orderId: string) =>
+    navigate({
+      to: '/dashboard/$userId/track-orders/$orderId',
+      params: { userId: user?.id as string, orderId },
+    });
 
   if (checkoutId !== validCheckoutId) {
     return <NotFoundComponent errorType="400" />;
@@ -148,6 +156,17 @@ function RouteComponent() {
                       </section>
                     </SimpleGrid>
                   </div>
+                  <Divider my="sm" />
+
+                  <MJButton
+                    className="ml-auto block"
+                    onClick={() => navigateTo(order.id as string)}
+                    size="xs"
+                    variant="outline"
+                    rightSection={<IconExternalLink />}
+                  >
+                    Track My Order
+                  </MJButton>
                 </Paper>
               );
             })}
@@ -160,7 +179,7 @@ function RouteComponent() {
               </div>
               <div>
                 <h3 className="font-semibold text-sm">Deliverying To</h3>
-                <p className="text-base text-gray-500">{deliveryAddress?.formattedAddress}</p>
+                <p className="text-sm text-gray-500">{deliveryAddress}</p>
               </div>
             </div>
           </Paper>
@@ -219,16 +238,13 @@ function RouteComponent() {
           </Paper>
 
           <div className="space-y-3 mt-4">
-            <Link
-              className="block"
-              to={`/dashboard/$userId/track-orders/$checkoutId`}
-              params={{ userId: user?.id as string, checkoutId: checkoutId }}
+            <MJButton
+              onClick={() =>
+                navigate({ to: `/dashboard/${user?.id}`, params: { userId: user?.id as string } })
+              }
+              variant="outline"
+              fullWidth
             >
-              <MJButton variant="outline" fullWidth rightSection={<IconExternalLink />}>
-                Track My Orders
-              </MJButton>
-            </Link>
-            <MJButton variant="outline" fullWidth>
               Back to Dashboard
             </MJButton>
           </div>

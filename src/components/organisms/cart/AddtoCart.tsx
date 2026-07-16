@@ -1,33 +1,26 @@
 import { useState } from 'react';
 import { IconChevronRight, IconNote, IconShoppingCart, IconTrash } from '@tabler/icons-react';
-import { useNavigate } from '@tanstack/react-router';
 import { ActionIcon, Checkbox, Divider, Drawer, Indicator } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import MJButton from '@/components/atoms/buttons/MJButton';
 import MJTextArea from '@/components/atoms/inputs/MJTextArea';
 import MJModal from '@/components/atoms/modals/MJModal';
 import CartItemCard from '@/components/molecules/cards/CartItemCard';
-import { useHandleCheckout } from '@/lib/api/services';
-import { useMealJetStore } from '@/lib/store/zustand.store';
+import { useHandleCart } from '@/lib/hooks';
 import { formatCurrency } from '@/lib/utils/helpers/helpers';
 
 const AddtoCart = () => {
   const {
-    user,
     cart,
-    removeItem,
+    handleRemoveItem,
     clearCart,
     noteForVendor,
     setNoteForVendor,
-    setCheckoutOrderSummary,
-  } = useMealJetStore((state) => state);
+    handleContinueToCheckout,
+    isPending,
+  } = useHandleCart();
+
   const [opened, { open, close }] = useDisclosure(false);
-
-  const { mutateAsync, isPending } = useHandleCheckout();
-
-  const navigate = useNavigate();
-
-  console.log(cart);
 
   const [openedNoteModal, { open: openNoteModal, close: closeNoteModal }] = useDisclosure(false);
 
@@ -37,28 +30,9 @@ const AddtoCart = () => {
     return acc + product.price * product.quantity;
   }, 0);
 
-  const handleRemoveItem = (id: string) => removeItem(id);
-
   const handleAddNoteForVendor = () => {
     setNoteForVendor(note);
     closeNoteModal();
-  };
-
-  const handleContinueToCheckout = async () => {
-    try {
-      const cartItems = Array.from(cart.values());
-      const response = await mutateAsync(cartItems);
-      console.log(response);
-      setCheckoutOrderSummary(response.data);
-      navigate({
-        to: '/dashboard/$userId/store/checkout',
-        params: { userId: user?.id as string },
-        search: { checkoutId: response?.data?.checkoutSessionId },
-        replace: true,
-      });
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   return (
@@ -126,7 +100,7 @@ const AddtoCart = () => {
                 </section>
 
                 <MJButton
-                  onClick={handleContinueToCheckout}
+                  onClick={() => handleContinueToCheckout()}
                   size="md"
                   className="w-full mt-2"
                   loading={isPending}

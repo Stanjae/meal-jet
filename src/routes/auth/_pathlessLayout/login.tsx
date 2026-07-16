@@ -10,9 +10,9 @@ export const Route = createFileRoute('/auth/_pathlessLayout/login')({
 function RouteComponent() {
   return (
     <div>
-      <div className=" text-center">
-        <MJLogo className=" mx-auto block" />
-        <h1 className=" text-2xl font-bold mt-4">Login into your Account</h1>
+      <div className="text-center">
+        <MJLogo className="mx-auto block" />
+        <h1 className=" text-lg md:text-2xl font-bold my-4">Login into your Account</h1>
       </div>
       <AuthLoginForm type={UserType.CUSTOMER} />
       <Link to="/auth/signup">

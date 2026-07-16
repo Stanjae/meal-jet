@@ -89,3 +89,19 @@ export type TMenuItemFieldGroup = {
   fields: TMenuItemsFields[];
   description?: string;
 };
+
+export type TSelectFilterData = {
+  label: string;
+  value: string;
+  icon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
+  color?: string;
+  disabled?: boolean;
+  type: 'button' | 'label' | 'divider';
+  secondaryLabel?: number;
+};
+
+export type TEmptyStateConfig = {
+  title: string;
+  description: string;
+  imageUrl: string;
+};

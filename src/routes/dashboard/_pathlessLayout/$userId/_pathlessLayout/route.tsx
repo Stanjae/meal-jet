@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
-import { AppShell, Burger, Group, NavLink } from '@mantine/core';
+import { AppShell, Burger, Divider, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import MJLogo from '@/components/atoms/logo/MJLogo';
@@ -38,6 +38,9 @@ function RouteComponent() {
     if (pathSegments.includes('checkout')) {
       return 'bg-primary/5';
     }
+    if (pathSegments === 'my-orders') {
+      return 'bg-[radial-gradient(circle_at_12%_14%,rgba(252,146,58,0.23),transparent_36%),radial-gradient(circle_at_85%_2%,rgba(141,193,88,0.2),transparent_32%),linear-gradient(145deg,#fffdf8,#ffffff_45%,#f7fbef)] bg-no-repeat bg-cover';
+    }
   };
 
   useEffect(() => {
@@ -60,6 +63,23 @@ function RouteComponent() {
     };
   }, [queryClient, user?.role]);
 
+  useEffect(() => {
+    if (user?.role !== UserType.CUSTOMER) return;
+
+    const onDeliveryUpdate = (payload: { orderNumber: string }) => {
+      notifications.show({
+        title: 'Order Update',
+        message: `There's an update for order ${payload.orderNumber}.`,
+        color: 'blue',
+      });
+    };
+    socket.on('order_update_to_customer', onDeliveryUpdate);
+
+    return () => {
+      socket.off('order_update_to_customer', onDeliveryUpdate);
+    };
+  }, [user?.role]);
+
   return (
     <AppShell
       padding="md"
@@ -72,17 +92,19 @@ function RouteComponent() {
     >
       <AppShell.Header className="flex items-center justify-between pr-5">
         <Group className="flex-1" px="md">
-          <MJLogo />
+          <MJLogo className=" hidden lg:block" />
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
           {user?.role === UserType.CUSTOMER && (
             <section
               onClick={openLocationWidget}
-              className="flex cursor-pointer w-full max-w-80 items-center border-x px-3 border-x-gray-200 gap-2"
+              className="lg:flex hidden cursor-pointer w-full max-w-80 items-center border-x px-3 border-x-gray-200 gap-2"
             >
               <IconMapPin color="orange" />
               <div>
-                <h4 className="uppercase text-xs font-semibold">Delivery to</h4>
+                <h4 className="uppercase hidden lg:inline-block text-xs font-semibold">
+                  Delivery to
+                </h4>
                 <p title={user?.currentAddress?.formattedAddress} className="text-sm text-gray-600">
                   {user?.currentAddress?.formattedAddress.slice(0, 30) ||
                     'Select a delivery location'}
@@ -153,6 +175,26 @@ function RouteComponent() {
             );
           })}
         </section>
+        {user?.role === UserType.CUSTOMER && (
+          <div className="lg:hidden mt-auto">
+            <Divider my="sm" />
+            <section
+              onClick={openLocationWidget}
+              className=" flex cursor-pointer w-full max-w-80 items-center px-3 border-x-gray-200 gap-2"
+            >
+              <IconMapPin color="orange" />
+              <div>
+                <h4 className="uppercase text-xs font-semibold">Delivery to</h4>
+                <p title={user?.currentAddress?.formattedAddress} className="text-sm text-gray-600">
+                  {user?.currentAddress?.formattedAddress.slice(0, 30) ||
+                    'Select a delivery location'}
+                  ...
+                </p>
+              </div>
+              <IconChevronDown className="ml-auto" />
+            </section>
+          </div>
+        )}
       </AppShell.Navbar>
       <AppShell.Main className={`${handleMainColor()} h-dvh overflow-y-auto`}>
         <Outlet />
