@@ -5,5 +5,19 @@
   transform: translateX(-50%);
 }
 
-.viewport {
+.container {
+  gap: 24px !important;
+}
+
+.controls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+}
+
+.root {
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
+  }
 }
