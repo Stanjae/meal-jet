@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
-import type { TGetAllVendorOrdersParams } from '@/lib/types';
+import type { TGetAllCustomerOrdersQueryParams, TGetAllVendorOrdersParams } from '@/lib/types';
 import { ENDPOINTS } from '../clients';
 import ordersClient from '../clients/orders';
 
@@ -75,6 +75,44 @@ export const useRiderUpdateDeliveryStatus = () => {
     onSuccess: (data) => {
       notifications.show({
         title: 'Delivery Updated',
+        message: data.message,
+        color: 'green',
+      });
+    },
+  });
+};
+
+export const useGetOrderById = (orderId: string) => {
+  return useQuery({
+    queryKey: [ENDPOINTS.getOrderDetailsById, orderId],
+    enabled: Boolean(orderId),
+    queryFn: async () => await ordersClient.getOrderDetailsById(orderId),
+    select: (data) => data.data.order,
+  });
+};
+
+export const useGetCustomerOrders = (query?: TGetAllCustomerOrdersQueryParams) => {
+  return useQuery({
+    queryKey: [ENDPOINTS.getCustomerOrders, query],
+    queryFn: async () => await ordersClient.getCustomerOrders(query),
+    select: (data) => data.data,
+  });
+};
+
+export const useGetCustomerOrdersSummary = () => {
+  return useQuery({
+    queryKey: [ENDPOINTS.getCustomerOrdersSummary],
+    queryFn: async () => await ordersClient.getCustomerOrdersSummary(),
+    select: (data) => data.data,
+  });
+};
+
+export const useHandleRevalidateOrder = () => {
+  return useMutation({
+    mutationFn: (orderId: string) => ordersClient.revalidateCheckoutSession(orderId),
+    onSuccess: (data) => {
+      notifications.show({
+        title: 'Checkout Successful',
         message: data.message,
         color: 'green',
       });

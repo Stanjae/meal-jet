@@ -75,3 +75,25 @@ export const VENDOR_ORDER_REJECT_REASONS = [
   'Kitchen closed',
   'Others',
 ];
+
+export const DELIVERY_PATH = [
+  statusHistoryStates.pending,
+  statusHistoryStates.confirmed,
+  statusHistoryStates.preparing,
+  statusHistoryStates.ready,
+  statusHistoryStates.assigned,
+  statusHistoryStates.picked_up,
+  statusHistoryStates.on_the_way,
+  statusHistoryStates.delivered,
+] as const;
+
+export function getOrderProgress(status: statusHistoryStates) {
+  if (status === statusHistoryStates.cancelled || status === statusHistoryStates.refunded) {
+    return 100;
+  }
+
+  const idx = DELIVERY_PATH.indexOf(status as (typeof DELIVERY_PATH)[number]);
+  if (idx < 0) return 0;
+
+  return Math.round((idx / (DELIVERY_PATH.length - 1)) * 100);
+}

@@ -130,7 +130,7 @@ function Hero() {
   const [address, setAddress] = useState('');
 
   return (
-    <section className="relative h-screen flex items-center overflow-hidden pt-16">
+    <section className="relative h-screen flex items-center overflow-hidden pt-120 lg:pt-16">
       {/* Background blobs */}
       <div className="absolute inset-0 -z-10">
         <div

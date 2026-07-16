@@ -17,6 +17,7 @@ import VendorMenuItemCard from '@/components/molecules/cards/VendorItemCard';
 import MJEmptyCard from '@/components/organisms/empty/MJEmptyCard';
 import vendorClient from '@/lib/api/clients/vendor';
 import { useGetMenuCategories, useGetMenuItems } from '@/lib/api/services';
+import { emptyStateConfig } from '@/lib/constants';
 import { UserType, type IMenuItem } from '@/lib/types';
 import { formatCurrency, newDayJs, requireRole } from '@/lib/utils/helpers/helpers';
 
@@ -190,7 +191,7 @@ function RouteComponent() {
               menuItem={selectedMenuItem}
             />
           ) : (
-            <MJEmptyCard type="vendorClosed" />
+            <MJEmptyCard emptyState={emptyStateConfig.vendorClosed} />
           )}
         </MJModal2>
       </section>

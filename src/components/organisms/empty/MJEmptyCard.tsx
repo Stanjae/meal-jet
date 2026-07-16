@@ -1,52 +1,41 @@
-import { useNavigate } from '@tanstack/react-router';
-import VendorImage from '@/assets/undraw_empty-cart_574u (1).svg';
 import MJButton from '@/components/atoms/buttons/MJButton';
+import type { TEmptyStateConfig } from '@/lib/types';
 
 type Props = {
-  type: 'vendor' | 'menuItem' | 'vendorClosed';
+  emptyState: TEmptyStateConfig | undefined;
+  btnText?: string;
+  btnClickHandler?: () => void;
+  btnText2?: string;
+  btnClickHandler2?: () => void;
+  wrapperClassName?: string;
 };
 
-const emptyStateConfig = {
-  vendor: {
-    title: 'No vendors found',
-    description: 'Try adjusting your search or filter criteria',
-    imageUrl: VendorImage,
-    btnText: 'See Open Vendors',
-    path: '/store',
-  },
-  menuItem: {
-    title: 'No menu items found',
-    description: 'Try adjusting your search or filter criteria',
-    imageUrl: VendorImage,
-    btnText: 'See Open Vendors',
-    path: '/store',
-  },
-  vendorClosed: {
-    title: 'Vendor is currently closed',
-    description: "You can't order from a closed vendor at the moment.",
-    imageUrl: VendorImage,
-    btnText: 'See Open Vendors',
-    path: '/dashboard/$userId/store',
-  },
-};
+const MJEmptyCard = ({
+  emptyState,
+  wrapperClassName,
+  btnText,
+  btnClickHandler,
+  btnText2,
+  btnClickHandler2,
+}: Props) => {
+  const { title, description, imageUrl } = emptyState || {};
 
-const MJEmptyCard = ({ type }: Props) => {
-  const { title, description, imageUrl, btnText, path } = emptyStateConfig[type];
-  const navigate = useNavigate();
   return (
-    <section>
+    <section className={wrapperClassName}>
       <div className="flex items-center justify-center py-5">
         <section className="w-full max-w-md space-y-2.5">
           <img className="w-30 h-25.25 mx-auto block " src={imageUrl} alt={title} />
           <h2 className="text-center text-xl font-semibold capitalize">{title}</h2>
-          <p className="text-center text-sm text-gray-400">{description}</p>
-          <MJButton
-            fullWidth
-            className="mt-3"
-            onClick={() => navigate({ to: path, params: { userId: 'current' } })}
-          >
-            {btnText}
-          </MJButton>
+          <p className="text-center text-sm mb-3 text-gray-400">{description}</p>
+
+          <div className="flex justify-center items-center gap-2.5">
+            {btnText2 && btnClickHandler2 && (
+              <MJButton className="bg-black text-white" onClick={btnClickHandler2}>
+                {btnText2}
+              </MJButton>
+            )}
+            {btnText && btnClickHandler && <MJButton onClick={btnClickHandler}>{btnText}</MJButton>}
+          </div>
         </section>
       </div>
     </section>

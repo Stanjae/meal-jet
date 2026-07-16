@@ -10,7 +10,7 @@ import { Link } from '@tanstack/react-router';
 import { ActionIcon, Divider, Image } from '@mantine/core';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import type { IVendor } from '@/lib/types';
-import { formatCurrency, newDayJs } from '@/lib/utils/helpers/helpers';
+import { formatCurrency } from '@/lib/utils/helpers/helpers';
 
 type Props = {
   vendor: IVendor;
@@ -18,13 +18,6 @@ type Props = {
 
 const VendorProfileCard = ({ vendor }: Props) => {
   const { user } = useMealJetStore((state) => state);
-  const openDayObj = vendor.openingHours.find(
-    (item) => item.day === newDayJs().format('d').toLowerCase()
-  );
-  const isOpen = newDayJs().isBetween(
-    `${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.openTime}`,
-    `${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.closeTime}`
-  );
 
   return (
     <Link
@@ -34,12 +27,12 @@ const VendorProfileCard = ({ vendor }: Props) => {
     >
       <div className=" h-39.5 relative">
         <Image
-          className={`${isOpen ? '' : 'grayscale'} h-full rounded-md`}
+          className={`${vendor.isOpen ? '' : 'grayscale'} h-full rounded-md`}
           src={vendor.coverImage}
           alt={vendor.name}
         />
         {/* overlay */}
-        {!isOpen && (
+        {!vendor.isOpen && (
           <div className="absolute flex items-center justify-center top-0 left-0 w-full h-full bg-black/60 rounded-md">
             <div className="flex items-center gap-1">
               <IconLockPassword size={20} color="white" />
