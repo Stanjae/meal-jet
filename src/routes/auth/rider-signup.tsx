@@ -8,7 +8,6 @@ export const Route = createFileRoute('/auth/rider-signup')({
   component: RiderSignupPage,
 });
 
-// ─── Main page ────────────────────────────────────────────────────────────────
 export default function RiderSignupPage() {
   return (
     <div

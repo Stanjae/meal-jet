@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
 import isBetween from 'dayjs/plugin/isBetween';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
@@ -13,6 +14,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 dayjs.extend(isBetween);
+dayjs.extend(calendar);
 
 dayjs.tz.setDefault('Africa/Lagos');
 

@@ -26,6 +26,7 @@ type TOrderVendorInfo = {
   _id: string;
   name: string;
   logo: string;
+  slug: string;
 };
 
 export type TOrder = {
@@ -132,8 +133,12 @@ export type TGetOrderDetailsResponse = TGetApiResponse<{
   totalServiceFee: number;
   grandTotal: number;
   paymentType: (typeof PAYMENT_METHODS)[number];
-  deliveryAddress: IAddress;
+  deliveryAddress: string;
   checkoutId: string;
+}>;
+
+export type TGetOrderDetailsByIdResponse = TGetApiResponse<{
+  order: TOrder;
 }>;
 
 export type TGetAllVendorOrdersResponse = TGetApiResponse<{
@@ -179,3 +184,31 @@ export type TRiderAcceptDispatchResponse = TPostApiResponse<{
 export type TRiderUpdateDeliveryStatusResponse = TPostApiResponse<{
   order: TOrder;
 }>;
+
+export type TGetAllCustomerOrdersResponse = TGetApiResponse<{
+  orders: TOrder[];
+}>;
+
+export type TGetAllCustomerOrdersSummaryResponse = TGetApiResponse<{
+  summary: {
+    ongoing: number;
+    completed: number;
+    allCount: number;
+    delivered: number;
+  };
+  totalAmountSpent: number;
+  averageAmountPerOrder: number;
+}>;
+
+export type TGetAllCustomerOrdersQueryParams = {
+  search?: string;
+  category?: string;
+};
+
+export type TRevalidateCheckoutSessionResponse = {
+  order: TOrder;
+  cartErrors: string[];
+  cartDetailedErrors: { itemId: string; message: string; type: 'item' | 'vendor' }[]; // replace `any` with the appropriate type if available
+};
+
+export type THandleRevalidateCheckoutResponse = TGetApiResponse<TRevalidateCheckoutSessionResponse>;

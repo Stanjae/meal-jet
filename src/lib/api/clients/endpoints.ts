@@ -37,11 +37,15 @@ export const ENDPOINTS = {
   //orders
   checkout: '/orders/check-out',
   getOrderDetails: '/orders/get-order-details',
+  getOrderDetailsById: '/orders/get-order-details-by-id',
   getVendorOrders: '/orders/get-vendor-orders',
   updateOrderStatus: '/orders/update-order-status',
   vendorRetryDispatch: '/orders/vendor/retry-dispatch',
   riderAcceptDispatch: '/orders/rider/accept-dispatch',
   riderUpdateDeliveryStatus: '/orders/rider/update-delivery-status',
+  getCustomerOrders: '/orders/get-customer-orders',
+  getCustomerOrdersSummary: '/orders/get-customer-orders-summary',
+  revalidateCheckoutSession: '/orders/revalidate-checkout-session',
 
   //payments
   initializePayment: '/payments/initialize',

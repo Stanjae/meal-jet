@@ -81,10 +81,10 @@ const DisplayAuthAvatar = () => {
       ) : isPublicRoute ? (
         <div
           onClick={handleOnClick}
-          className="flex items-center cursor-pointer bg-primary/10 gap-2 pr-2.5 rounded-full py-0.5"
+          className="flex items-center cursor-pointer bg-primary/10 gap-2 lg:pr-2.5 rounded-full py-0.5"
         >
           <Avatar name={user?.username as string} color="initials" />
-          <span className="text-sm font-medium">Back to Dashboard</span>
+          <span className="hidden lg:inline-block text-sm font-medium">Back to Dashboard</span>
         </div>
       ) : null}
     </Group>

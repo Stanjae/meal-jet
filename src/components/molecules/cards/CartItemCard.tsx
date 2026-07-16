@@ -15,7 +15,7 @@ type Props = {
 const CartItemCard = ({ product, index, deleteAction }: Props) => {
   const customization = product.addons?.flatMap((addon) => {
     return (
-      <div>
+      <div key={addon.name} className="flex flex-col gap-1">
         <p className="text-sm font-medium">{addon.name}</p>
         <List spacing={'xs'} icon={<IconPointFilled size={10} />} size="xs">
           {addon.options
@@ -28,7 +28,7 @@ const CartItemCard = ({ product, index, deleteAction }: Props) => {
     );
   });
   return (
-    <div>
+    <div key={product.id}>
       <div className="flex justify-between items-start">
         <p className="text-sm text-gray-500">Pack {index !== undefined ? index + 1 : ''}</p>
         <ActionIcon size={'sm'} variant="light" color="red" onClick={deleteAction}>
