@@ -3,7 +3,7 @@ import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { AppShell, Burger, Divider, Group, NavLink } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import MJLogo from '@/components/atoms/logo/MJLogo';
 import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
@@ -24,7 +24,7 @@ function RouteComponent() {
   const { user } = useMealJetStore((state) => state);
   const queryClient = useQueryClient();
 
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [mobileOpened, { close: closeMobile, toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [locationWidgetOpened, { open: openLocationWidget, close: closeLocationWidget }] =
     useDisclosure(false);
@@ -79,6 +79,15 @@ function RouteComponent() {
       socket.off('order_update_to_customer', onDeliveryUpdate);
     };
   }, [user?.role]);
+
+  const matches = useMediaQuery('(max-width: 480px)');
+
+  const handleClickLink = () => {
+    if (matches) {
+      closeMobile();
+      return;
+    }
+  };
 
   return (
     <AppShell
@@ -147,6 +156,7 @@ function RouteComponent() {
                     return (
                       <NavLink
                         label={child.label}
+                        onClick={handleClickLink}
                         renderRoot={(props) => (
                           <Link to={childPath} activeOptions={{ exact: true }} {...props} />
                         )}
@@ -162,6 +172,7 @@ function RouteComponent() {
             return (
               <NavLink
                 label={item.label}
+                onClick={handleClickLink}
                 key={item.label}
                 className="rounded-md"
                 styles={{ label: { fontSize: 15, fontWeight: 600 } }}

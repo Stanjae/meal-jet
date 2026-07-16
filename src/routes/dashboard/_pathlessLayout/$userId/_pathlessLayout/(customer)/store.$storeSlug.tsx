@@ -1,13 +1,25 @@
 import { useMemo, useState } from 'react';
 import {
+  IconArrowNarrowLeft,
   IconBike,
   IconCircleAsterisk,
   IconHeart,
   IconSearch,
   IconStarFilled,
 } from '@tabler/icons-react';
-import { createFileRoute } from '@tanstack/react-router';
-import { ActionIcon, Avatar, Badge, Divider, Image, SimpleGrid, Tabs } from '@mantine/core';
+import { createFileRoute, useCanGoBack, useRouter } from '@tanstack/react-router';
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Divider,
+  Group,
+  Image,
+  Paper,
+  SimpleGrid,
+  Tabs,
+  Text,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import MJTextinput from '@/components/atoms/inputs/MJTextinput';
 import MJCardSkeleton from '@/components/atoms/loader/MJCardSkeleton';
@@ -71,15 +83,12 @@ function RouteComponent() {
     closeMenuItemModal();
   };
 
-  const isOpen = newDayJs().isBetween(
-    `${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.openTime}`,
-    `${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.closeTime}`
-  );
-
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
   return (
     <div className="relative">
-      {/* fixed header */}
-      <section className=" fixed w-full space-y-2 z-30 pt-2 bg-white top-15">
+      {/*  fixed header for large screens */}
+      <section className=" hidden lg:block fixed w-full space-y-2 z-30 pt-2 bg-white top-15">
         <div className="flex gap-2">
           <div className=" w-72 h-42 relative ">
             <Image
@@ -131,11 +140,11 @@ function RouteComponent() {
             </div>
 
             <p className="font-semibold">
-              <span className={`${isOpen ? 'text-green-600' : 'text-red-500'}`}>
-                {isOpen ? 'Open now ' : 'Closed '}{' '}
+              <span className={`${vendor?.isOpen ? 'text-green-600' : 'text-red-500'}`}>
+                {vendor?.isOpen ? 'Open now ' : 'Closed '}{' '}
               </span>
               until{' '}
-              {!isOpen
+              {!vendor?.isOpen
                 ? newDayJs(`${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.openTime}`).format(
                     'h:mm A'
                   )
@@ -163,15 +172,104 @@ function RouteComponent() {
         </Tabs>
       </section>
 
+      {/*  fixed header for small screens */}
+      <section className=" lg:hidden block w-full space-y-2 z-30 pt-2 bg-white top-15">
+        <div className="h-30 relative">
+          <ActionIcon variant="white" className="rounded-full absolute right-3 top-3" size={'lg'}>
+            <IconHeart className="text-secondary" />
+          </ActionIcon>
+          {canGoBack && (
+            <ActionIcon
+              onClick={() => router.history.back()}
+              variant="white"
+              className="rounded-full absolute left-3 right-3 top-3"
+              size={'lg'}
+            >
+              <IconArrowNarrowLeft />
+            </ActionIcon>
+          )}
+          <Image
+            src={vendor?.coverImage}
+            alt={`${vendor?.name} cover image`}
+            className="object-cover w-full h-full rounded-lg"
+          />
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white rounded-full p-1.5">
+            <Avatar size="lg" src={vendor?.logo} />
+          </div>
+        </div>
+        <div className=" pt-6 space-y-1.5">
+          <h1 className="text-lg text-center font-medium">{vendor?.name}</h1>
+          <p className="font-semibold text-center">
+            <span className={`${vendor?.isOpen ? 'text-green-600' : 'text-red-500'}`}>
+              {vendor?.isOpen ? 'Open now ' : 'Closed '}{' '}
+            </span>
+            until{' '}
+            {!vendor?.isOpen
+              ? newDayJs(`${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.openTime}`).format(
+                  'h:mm A'
+                )
+              : newDayJs(`${newDayJs().format('YYYY-MM-DD')}T${openDayObj?.closeTime}`).format(
+                  'h:mm A'
+                )}
+          </p>
+          <Paper py="sm" className="my-5" withBorder>
+            <Group grow justify="center">
+              <div className="border-r border-gray-200">
+                <Text c="dimmed" className="text-xs mb-1 text-center font-medium">
+                  Delivery fee
+                </Text>
+                <p
+                  className={` ${vendor?.deliveryFee > 0 ? '' : 'text-secondary'} text-sm text-center`}
+                >
+                  {vendor?.deliveryFee > 0
+                    ? `${formatCurrency(vendor.deliveryFee, 'NGN')}`
+                    : 'Free delivery'}
+                </p>
+              </div>
+              <div className="border-r border-gray-200">
+                <Text c="dimmed" className="text-xs mb-1 text-center font-medium">
+                  Preparation time
+                </Text>
+                <p
+                  className={` ${vendor?.deliveryFee > 0 ? '' : 'text-secondary'} text-sm text-center`}
+                >
+                  {Number(vendor.avgPrepTime) - 10} - {vendor?.avgPrepTime} mins
+                </p>
+              </div>
+              <div className="border-r border-gray-200">
+                <Text c="dimmed" className="text-xs text-center font-medium">
+                  Ratings
+                </Text>
+                <div className="flex items-center justify-center gap-1">
+                  <IconStarFilled color="gold" size={14} />
+                  <p className="font-semibold text-sm">
+                    {vendor.avgRating.toFixed(1)}
+                    <span className="text-sm text-gray-400 ml-1">({vendor?.totalRatings})</span>
+                  </p>
+                </div>
+              </div>
+            </Group>
+          </Paper>
+        </div>
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs.List className="flex flex-nowrap overflow-x-auto">
+            <Tabs.Tab value={'all'}>All</Tabs.Tab>
+            {menuCategories?.data?.map((category) => (
+              <Tabs.Tab value={category?.id}>{category?.name}</Tabs.Tab>
+            ))}
+          </Tabs.List>
+        </Tabs>
+      </section>
+
       {/* menu items */}
-      <section className=" relative top-70">
+      <section className=" relative top-7 lg:top-70 pb-7">
         <h2 className="text-xl capitalize mb-5">
           {activeTab === 'all' ? 'All' : categoryName?.name}
         </h2>
 
         {isMenuItemsLoading && <MJCardSkeleton cols={2} type="menuItem" totalCount={10} />}
 
-        <SimpleGrid cols={2} spacing="md">
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
           {menuItems?.data?.map((item) => (
             <VendorMenuItemCard handleClick={handleMenuItemClick} menuItem={item} key={item.id} />
           ))}
@@ -179,12 +277,12 @@ function RouteComponent() {
 
         {/* menu item modal */}
         <MJModal2
-          title={isOpen ? '' : 'Closed'}
+          title={vendor?.isOpen ? '' : 'Closed'}
           size={550}
           opened={openedMenuItemModal}
           onClose={closeMenuItemModal}
         >
-          {isOpen ? (
+          {vendor?.isOpen ? (
             <MenuItemDetailsCard
               vendor={vendor}
               closeAction={handleCloseAction}
