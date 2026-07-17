@@ -59,7 +59,9 @@ const VendorProfileCard = ({ vendor }: Props) => {
               <IconCircleAsterisk className=" text-primary" size={14} />
             )}
 
-            <span className={` ${vendor?.deliveryFee > 0 ? '' : 'text-primary'} text-sm`}>
+            <span
+              className={` ${vendor?.deliveryFee > 0 ? '' : 'text-primary'} text-xs md:text-sm`}
+            >
               {vendor?.deliveryFee > 0
                 ? `${formatCurrency(vendor.deliveryFee, 'NGN')}`
                 : 'Free delivery'}
@@ -70,16 +72,22 @@ const VendorProfileCard = ({ vendor }: Props) => {
             <IconStarFilled color="gold" size={14} />
             <p className="font-semibold text-sm">
               {vendor?.avgRating.toFixed(1)}
-              <span className="text-sm text-gray-400 ml-1">({vendor?.totalRatings})</span>
+              <span className="md:text-sm text-xs text-gray-400 ml-1">
+                ({vendor?.totalRatings})
+              </span>
             </p>
           </div>
           <Divider orientation="vertical" />
-          <div className="flex items-center gap-1">
-            <IconClock24 size={14} />
-            <span className="text-sm">
-              {Number(vendor.avgPrepTime) - 10} - {vendor?.avgPrepTime} mins
-            </span>
-          </div>
+          {vendor?.isOpen ? (
+            <div className="flex items-center gap-1">
+              <IconClock24 size={14} />
+              <span className="md:text-sm text-xs">
+                {Number(vendor.avgPrepTime) - 10} - {vendor?.avgPrepTime} mins
+              </span>
+            </div>
+          ) : (
+            <span className="md:text-sm text-xs text-red-500">Closed</span>
+          )}
         </div>
       </div>
     </Link>
