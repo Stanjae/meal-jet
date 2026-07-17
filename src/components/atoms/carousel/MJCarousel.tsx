@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, type CarouselProps } from '@mantine/carousel';
+import classes from '@/styles/css/Carousel.module.css';
 
 import '@mantine/carousel/styles.css';
-
-import classes from '@/styles/css/Carousel.module.css';
 
 type MJCarouselProps = CarouselProps & {
   children: React.ReactNode;
