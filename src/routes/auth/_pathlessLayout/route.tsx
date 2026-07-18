@@ -5,9 +5,7 @@ import hamburgerImg from '../../../assets/hamburger.jpg';
 
 export const Route = createFileRoute('/auth/_pathlessLayout')({
   component: RouteComponent,
-  beforeLoad: async () => {
-    await checkAuthAuthRoute();
-  },
+  beforeLoad: () => checkAuthAuthRoute(),
 });
 
 function RouteComponent() {

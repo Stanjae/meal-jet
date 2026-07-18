@@ -30,7 +30,7 @@ const authClient = {
    * @throws {Error} If the request fails.
    */
   verifyEmail: async (token: string) => {
-    return await Client.get<{ data: { message: string; user: IUser } }>(
+    return await Client.get<{ data: { message: string; isVerified: boolean; title: string } }>(
       `${ENDPOINTS.verifyEmail}?token=${token}`
     );
   },
