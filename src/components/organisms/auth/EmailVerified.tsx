@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import { Loader } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useVerifyEmail } from '@/lib/api/services';
-import { useMealJetStore } from '@/lib/store/zustand.store';
 
 const routeApi = getRouteApi('/auth/account-verification');
 
@@ -152,14 +150,13 @@ export default function EmailVerify() {
 
   const router = useNavigate();
 
-  const { setUser } = useMealJetStore((state) => state);
-
   const { isSuccess: isVerified, isLoading, data } = useVerifyEmail(routeSearch.token as string);
+  const isEmailVerified = data?.data?.isVerified;
 
   // Derive phase from query states
   const phase: 'loading' | 'success' | 'error' = isLoading
     ? 'loading'
-    : isVerified
+    : isVerified && isEmailVerified
       ? 'success'
       : 'error';
 
@@ -168,19 +165,9 @@ export default function EmailVerify() {
     if (phase === 'success') {
       const t = setTimeout(() => setParticles(true), 300);
 
-      if (routeSearch.context === 'login' && data?.data?.user) {
-        setUser(data?.data?.user);
-        notifications.show({
-          loading: true,
-          title: 'Redirecting...',
-          message: 'Your email has been verified. You are being redirected to your dashboard.',
-        });
-        router({ to: '/dashboard/$userId', params: { userId: data.data.user.id } });
-      }
-
       return () => clearTimeout(t);
     }
-  }, [phase, routeSearch, data, setUser, router]);
+  }, [phase]);
 
   const isSuccess = phase === 'success';
   const isError = phase === 'error';
@@ -258,7 +245,7 @@ export default function EmailVerify() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              Email Verified
+              {data?.data?.title ?? 'Email Verified'}
             </motion.h1>
             <motion.p
               className="mb-8 max-w-65 text-sm leading-relaxed text-slate-400"
@@ -323,9 +310,12 @@ export default function EmailVerify() {
               >
                 Resend Verification Email
               </motion.button>
-              <button className="text-xs text-slate-500 underline underline-offset-4 hover:text-slate-300 transition-colors">
+              <Link
+                to="/auth/login"
+                className="text-xs text-slate-500 underline underline-offset-4 hover:text-slate-300 transition-colors"
+              >
                 Back to Sign In
-              </button>
+              </Link>
             </motion.div>
           </motion.div>
         )}

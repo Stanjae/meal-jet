@@ -31,7 +31,7 @@ function RouteComponent() {
           height={250}
         >
           {vendors?.data.vendors?.map((vendor) => (
-            <VendorProfileCard vendor={vendor} />
+            <VendorProfileCard key={vendor.id} vendor={vendor} />
           ))}
         </MJCarousel>
       </div>

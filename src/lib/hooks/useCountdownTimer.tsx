@@ -9,30 +9,17 @@ type Props = {
   minutes: number;
 };
 
-function getRemainingTime() {
-  const savedEndTime = localStorage.getItem('countdownEndTime');
-  const savedIsActive = localStorage.getItem('countdownIsActive');
+const COUNTDOWN_END_TIME_KEY = 'countdownEndTime';
+const COUNTDOWN_ACTIVE_KEY = 'countdownIsActive';
+const START_VERIFICATION_KEY = 'start-verification';
 
-  if (savedEndTime && savedIsActive === 'true') {
-    const endTime = parseInt(savedEndTime);
-    const now = Date.now();
-    if (now < endTime) {
-      return Math.ceil((endTime - now) / 1000);
-    }
-  }
-  return 0;
+function getSecondsLeftFromEndTime(endTime: number) {
+  return Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
 }
 
-function isStillActive() {
-  const savedIsActive = localStorage.getItem('countdownIsActive');
-  if (savedIsActive === 'true') {
-    return true;
-  }
-  return false;
-}
 const useCountdownTimer = ({ minutes }: Props) => {
-  const [timeLeft, setTimeLeft] = useState(getRemainingTime());
-  const [isActive, setIsActive] = useState(isStillActive());
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isActive, setIsActive] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function startCountdown() {
@@ -43,9 +30,15 @@ const useCountdownTimer = ({ minutes }: Props) => {
     setIsActive(true);
 
     // Save to localStorage
-    localStorage.setItem('countdownEndTime', endTime.toString());
-    localStorage.setItem('countdownIsActive', 'true');
+    localStorage.setItem(COUNTDOWN_END_TIME_KEY, endTime.toString());
+    localStorage.setItem(COUNTDOWN_ACTIVE_KEY, 'true');
   }
+
+  const clearCountdownStorage = () => {
+    localStorage.removeItem(COUNTDOWN_END_TIME_KEY);
+    localStorage.removeItem(COUNTDOWN_ACTIVE_KEY);
+    localStorage.removeItem(START_VERIFICATION_KEY);
+  };
 
   async function startCountdownAction() {
     try {
@@ -72,44 +65,61 @@ const useCountdownTimer = ({ minutes }: Props) => {
   }
 
   useEffect(() => {
-    const startVerification = localStorage.getItem('start-verification');
-    const savedEndTime = localStorage.getItem('countdownEndTime');
-    const savedIsActive = localStorage.getItem('countdownIsActive');
+    const startVerification = localStorage.getItem(START_VERIFICATION_KEY);
+    const savedEndTime = localStorage.getItem(COUNTDOWN_END_TIME_KEY);
+    const savedIsActive = localStorage.getItem(COUNTDOWN_ACTIVE_KEY);
 
-    if (startVerification === 'true' && !savedEndTime && !savedIsActive) {
+    if (savedEndTime && savedIsActive === 'true') {
+      const endTime = Number(savedEndTime);
+      const remaining = Number.isNaN(endTime) ? 0 : getSecondsLeftFromEndTime(endTime);
+
+      if (remaining > 0) {
+        setTimeLeft(remaining);
+        setIsActive(true);
+        return;
+      }
+
+      clearCountdownStorage();
+    }
+
+    if (startVerification === 'true') {
       startCountdown();
     }
   }, []);
 
   // Timer effect
   useEffect(() => {
-    if (isActive && timeLeft > 0) {
+    if (isActive) {
       intervalRef.current = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            setIsActive(false);
-            localStorage.removeItem('countdownEndTime');
-            localStorage.removeItem('countdownIsActive');
-            localStorage.removeItem('start-verification');
-            return 0;
-          }
-          return prevTime - 1;
-        });
+        const savedEndTime = localStorage.getItem(COUNTDOWN_END_TIME_KEY);
+        const endTime = savedEndTime ? Number(savedEndTime) : NaN;
+        const remaining = Number.isNaN(endTime) ? 0 : getSecondsLeftFromEndTime(endTime);
+
+        if (remaining <= 0) {
+          setTimeLeft(0);
+          setIsActive(false);
+          clearCountdownStorage();
+          return;
+        }
+
+        setTimeLeft(remaining);
       }, 1000);
-    } else {
-      clearInterval(intervalRef.current!);
     }
 
-    return () => clearInterval(intervalRef.current!);
-  }, [isActive, timeLeft]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isActive]);
 
   const resetCountdown = () => {
     setTimeLeft(0);
     setIsActive(false);
-    clearInterval(intervalRef.current!);
-    localStorage.removeItem('countdownEndTime');
-    localStorage.removeItem('countdownIsActive');
-    localStorage.removeItem('start-verification');
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    clearCountdownStorage();
   };
 
   // Format time as MM:SS

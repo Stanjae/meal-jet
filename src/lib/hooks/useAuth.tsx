@@ -16,12 +16,13 @@ const useAuth = () => {
 
   const loginUser = useLogin();
   const navigate = useNavigate();
+
   const handleSignUp = async (payload: SignupFormData) => {
     try {
       const response = await createCustomerSignup.mutateAsync(payload);
       notifications.show({
         title: 'Signup Successful',
-        message: response?.data?.message,
+        message: response?.message,
         color: 'green',
       });
       navigate({
@@ -35,6 +36,7 @@ const useAuth = () => {
       });
     } catch (err) {
       const newError = err as AxiosError<{ message: string; success: boolean }>;
+      console.log('handleSignUp error', newError);
       const { message, success } = newError?.response?.data || {};
       notifications.show({
         title: success ? 'Signup Successful' : 'Signup Failed',
