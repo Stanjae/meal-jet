@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { Button, Paper } from '@mantine/core';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { Button, Group, Paper } from '@mantine/core';
 import { useCountdownTimer } from '@/lib/hooks';
 
 export const Route = createFileRoute('/auth/verify-now')({
@@ -8,6 +8,11 @@ export const Route = createFileRoute('/auth/verify-now')({
 
 function RouteComponent() {
   const { timeLeft, formatTime, isActive, handleResendToken } = useCountdownTimer({ minutes: 5 });
+  const navigate = useNavigate();
+
+  const handleBackToSignIn = () => {
+    navigate({ to: '/auth/login' });
+  };
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-light-pattern">
       <Paper
@@ -17,9 +22,14 @@ function RouteComponent() {
         <h1>A Verification Link has been sent to your email</h1>
         <p>Please check your inbox and click the link to verify your account.</p>
         <div>{formatTime(timeLeft)}</div>
-        <Button disabled={isActive} onClick={handleResendToken}>
-          Resend Verification
-        </Button>
+        <Group justify="center" mt="md">
+          <Button color="m-green" variant="outline" onClick={handleBackToSignIn}>
+            Back to Sign In
+          </Button>
+          <Button disabled={isActive} onClick={handleResendToken}>
+            Resend Verification
+          </Button>
+        </Group>
       </Paper>
     </div>
   );

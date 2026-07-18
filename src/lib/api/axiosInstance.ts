@@ -13,7 +13,7 @@ let refreshPromise: Promise<void> | null = null;
 function getRefreshPromise() {
   if (!refreshPromise) {
     refreshPromise = api
-      .get('/auth/is-authenticated')
+      .get('/auth/refresh')
       .then((res) => {
         // update store with fresh user data
         useMealJetStore.getState().setUser(res.data.data.user);
@@ -44,7 +44,7 @@ api.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error)
 );
 
-const SKIP_REFRESH_URLS = ['/auth/login', '/auth/register', '/auth/is-authenticated']; // Add any other auth-related endpoints that shouldn't trigger refresh logic
+const SKIP_REFRESH_URLS = ['/auth/login', '/auth/register', '/auth/refresh']; // Add any other auth-related endpoints that shouldn't trigger refresh logic
 
 api.interceptors.response.use(
   (response) => response,

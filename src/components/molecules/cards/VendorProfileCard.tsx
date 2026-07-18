@@ -24,6 +24,7 @@ const VendorProfileCard = ({ vendor }: Props) => {
       to={'/dashboard/$userId/store/$storeSlug'}
       params={{ storeSlug: vendor.slug, userId: user?.id as string }}
       className="block"
+      key={vendor.id}
     >
       <div className=" h-39.5 relative">
         <Image
