@@ -5,3 +5,4 @@ export * from './menu.types';
 export * from './orders.types';
 export * from './payment.types';
 export * from './rider.types';
+export * from './wallet.types';

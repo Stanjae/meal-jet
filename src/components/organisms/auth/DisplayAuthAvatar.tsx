@@ -1,30 +1,17 @@
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
 import { Avatar, Group } from '@mantine/core';
 import MJButton from '@/components/atoms/buttons/MJButton';
-import MJDropdown from '@/components/molecules/dropdowns/MJDropdown';
 import VendorDropdown from '@/components/molecules/dropdowns/VendorDropdown';
-import { dasboardDropdownOptions } from '@/lib/constants';
-import { useAuth } from '@/lib/hooks';
 import { useMealJetStore } from '@/lib/store/zustand.store';
 import { UserType } from '@/lib/types';
 import AddtoCart from '../cart/AddtoCart';
+import ProfileWidget from './ProfileWidget';
 
 const DisplayAuthAvatar = () => {
   const { user, vendor, setVendorProfile } = useMealJetStore((state) => state);
   const router = useNavigate();
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  const { handleLogout } = useAuth();
-  const avatarOptions = dasboardDropdownOptions.map((option) => {
-    if (option.value === 'logout') {
-      return {
-        ...option,
-        action: handleLogout,
-      };
-    }
-    return option;
-  });
 
   const handleDisplayComponent = () => {
     if (!user) {
@@ -74,10 +61,7 @@ const DisplayAuthAvatar = () => {
     <Group>
       {handleDisplayComponent()}
       {isDashboardRoute ? (
-        <MJDropdown
-          items={avatarOptions}
-          target={<Avatar name={user?.username as string} color="initials" />}
-        />
+        <ProfileWidget />
       ) : isPublicRoute ? (
         <div
           onClick={handleOnClick}

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { IconChevronDown, IconMapPin } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet, useRouter, useRouterState } from '@tanstack/react-router';
 import { AppShell, Burger, Divider, Group, NavLink } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useDisclosure, useDocumentVisibility, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import MJLogo from '@/components/atoms/logo/MJLogo';
 import AddUpdateLocationModal from '@/components/molecules/modals/AddUpdateLocationModal';
@@ -88,6 +88,15 @@ function RouteComponent() {
       return;
     }
   };
+
+  const visibility = useDocumentVisibility();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (visibility === 'visible') {
+      router.invalidate();
+    }
+  }, [visibility, router]);
 
   return (
     <AppShell

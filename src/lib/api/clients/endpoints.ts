@@ -53,4 +53,7 @@ export const ENDPOINTS = {
   //rider
   createRider: '/rider/create-rider',
   checkRiderApprovalStatus: '/rider/is-rider-approved',
+
+  //wallet
+  createWallet: '/wallet/create-wallet',
 };
