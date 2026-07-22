@@ -24,6 +24,8 @@ export interface ILocation {
 export type IUser = {
   id: string;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone?: string;
   role: UserType;

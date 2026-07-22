@@ -1,4 +1,4 @@
-import { redirect } from '@tanstack/react-router';
+import { isRedirect, redirect } from '@tanstack/react-router';
 import { notifications } from '@mantine/notifications';
 import authClient from '../api/clients/auth';
 import socket from '../socket.io/socketConfig';
@@ -85,16 +85,20 @@ function redirectByRole(user: NonNullable<ReturnType<typeof useMealJetStore.getS
   }
 }
 
-///for the /auth route, we will check if the user is authenticated and redirect them to their respective dashboard based on their role. If the user is not authenticated, they will be allowed to access the /auth route.
-export const checkAuthAuthRoute = () => {
-  const user = useMealJetStore.getState().user;
-
-  if (user) {
-    redirectByRole(user);
+//for the /auth route, we will check if the user is authenticated and redirect them to their respective dashboard based on their role. If the user is not authenticated, they will be allowed to access the /auth route.
+export const checkAuthAuthRoute = async () => {
+  try {
+    const data = await authClient.isAuthenticated();
+    const newUser = data?.data?.user;
+    useMealJetStore.getState().setUser(newUser);
+    if (newUser) {
+      redirectByRole(newUser);
+    }
+  } catch (e) {
+    // User is not authenticated, allow access to /auth route
+    if (isRedirect(e)) {
+      throw e; // let the router actually perform the redirect
+    }
+    console.error('User is not authenticated, allowing access to /auth route', e);
   }
-
-  /*  if (isRedirect(e)) {
-        throw e; // let the router actually perform the redirect
-      }
-      console.error('User is not authenticated, allowing access to /auth route', e); */
 };

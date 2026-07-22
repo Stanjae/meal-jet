@@ -5,3 +5,4 @@ export * from './menu';
 export * from './payment';
 export * from './orders';
 export * from './rider';
+export * from './wallet';

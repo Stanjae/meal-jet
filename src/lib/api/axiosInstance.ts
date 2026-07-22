@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { notifications } from '@mantine/notifications';
 import { useMealJetStore } from '../store/zustand.store';
 
 const api = axios.create({
@@ -21,13 +20,6 @@ function getRefreshPromise() {
       .catch((err) => {
         // both tokens are dead — now we clear and let router redirect
         useMealJetStore.getState().clearUser();
-        notifications.show({
-          color: 'red',
-          title: 'Redirecting to login page',
-          message: 'Your session has expired. Please login again.',
-          loading: true,
-        });
-        window.location.replace('/auth/login'); // Redirect to login page
         return Promise.reject(err);
       })
       .finally(() => {
@@ -67,7 +59,6 @@ api.interceptors.response.use(
         // retry the original request with the new access token
         return api(originalRequest);
       } catch {
-        // only gets here if refresh token is also dead
         return Promise.reject(error);
       }
     }
